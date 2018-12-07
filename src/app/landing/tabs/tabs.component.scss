@@ -1,0 +1,22 @@
+@import '../../../styles/variables';
+@import '../../../styles/mixins';
+
+.category-tabs {
+    display: flex;
+    align-items: center;
+}
+
+.tab-link {
+    @include flex-centered;
+    height: 32px;
+    border-radius: 16px;
+    padding-left: 12px;
+    font-size: 20px;
+    color: #424242;
+    margin-right: 30px;
+
+    &.tab-link-active {
+        background-color: $navy-blue;
+        color: white;
+    }
+}

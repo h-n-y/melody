@@ -1,0 +1,49 @@
+@import '../../../styles/mixins';
+@import '../../../styles/variables';
+
+#landing-page {
+    padding: 32px 12px 64px;
+}
+
+/**
+ * Category tabs should only be visible for wide screens ( tablet landscape
+ * and up ).
+ */
+app-tabs {
+    display: none;
+}
+
+h4 {
+    color: #5c5c5c;
+    margin-bottom: 8px;
+}
+
+.loading-indicator {
+    @include flex-centered;
+    height: 160px;
+}
+
+.tracks {
+    /** add spacing between artists and tracks sections */
+    margin-top: 64px;
+}
+
+@include for-tablet-landscape-up {
+
+    #landing-page {
+        padding-top: 40px;
+    }
+
+    app-tabs {
+        margin-left: 5.5%;
+        margin-bottom: 30px;
+        display: block;
+    }
+
+    .artists,
+    .tracks {
+        width: 50%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}

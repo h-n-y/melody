@@ -1,0 +1,66 @@
+@import '../../../styles/variables';
+@import '../../../styles/mixins';
+
+header {
+    display: flex;
+    align-items: center;
+    height: $header-height;
+}
+
+.search-bar-container {
+    width: 100%;
+    padding: 12px;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+}
+
+/**
+ * PRIMARY NAVIGATION
+ * Hide navigation for small devices.
+ */
+nav {
+    display: none;
+}
+
+/**
+ * FAUX SEARCH BAR
+ */
+.faux-search-bar {
+    @include flex-centered;
+    position: relative;
+    height: 44px;
+    border-radius: 22px;
+    background-color: $search-bar-bg-color;
+    cursor: text;
+
+    img {
+        position: absolute;
+        left: 17px;
+        top: 12px;
+        width: 19px;
+    }
+
+    /** The 'Search' placeholder */
+    .faux-search-bar__placeholder {
+        opacity: 0.5;
+    }
+}
+
+/**
+ * TABLET LANDSCAPE AND LARGER
+ */
+@include for-tablet-landscape-up {
+
+    /** show the primary navigation */
+    nav {
+        display: flex;
+    }
+
+    nav,
+    .search-bar-container {
+        width: 33.333%;
+    }
+}

@@ -1,0 +1,35 @@
+//
+// Flex box
+//
+
+@mixin flex-centered() {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+//
+// Breakpoints
+//
+
+@mixin for-tablet-portrait-up {
+    @media (min-width: 600px) { @content; }
+}
+
+@mixin for-tablet-landscape-up {
+    @media (min-width: 900px) { @content; }
+}
+
+@mixin for-desktop-up {
+    @media (min-width: 1200px) { @content; }
+}
+
+//
+// Text
+//
+
+@mixin truncate-ellipsis() {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

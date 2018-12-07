@@ -1,0 +1,15 @@
+@import '../styles/variables';
+@import '../styles/mixins';
+
+#primary-content {
+    /** 'pushes' footer down to bottom of viewport */
+    min-height: calc(100vh - #{$header-height + $footer-height-mobile});
+}
+
+
+@include for-tablet-landscape-up {
+    #primary-content {
+        /** 'pushes' footer down to bottom of viewport */
+        min-height: calc(100vh - #{$header-height + $footer-height});
+    }
+}

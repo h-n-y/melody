@@ -1,0 +1,22 @@
+<div class="track-table-row table-row">
+    <!-- track album icon -->
+   <div class="icon-placeholder">
+       <img *ngIf="track.album_coverart_100x100"
+            [src]="track.album_coverart_100x100"
+            alt="track album cover" />
+   </div>
+   <div class="primary-content">
+       <div class="track-name-and-album">
+           <h4 class="track-name">
+                {{ track.track_name }}   
+
+                <span class="track-album">
+                   {{ '( Album: ' + track.album_name + ' )' }} 
+                </span>
+           </h4> 
+       </div>
+       <p class="track-artist">
+           {{ track.artist_name }} 
+       </p>
+   </div>
+</div>

@@ -1,0 +1,38 @@
+/** DIMENSIONS */
+
+$header-height: 68px;
+$footer-height: 50px;
+$footer-height-mobile: 166px;
+
+/** COLORS */
+
+$navy-blue: #002e40;
+$blue-green: #2a5769;
+$yellow: #fabd4a;
+$orange: #fa9600;
+$light-grey: #f2f2f2;
+
+/** Color Scheme */
+
+$search-bar-bg-color: $light-grey;
+$footer-bg-color: $light-grey;
+$footer-color: #666;
+
+$link-color: $orange;
+
+// Text colors
+$text-color: #686868;
+$text-color-light: #a3a3a3;
+$text-color-dark: #090909;
+
+//$title-color: #424242;
+//$subtitle-color: #777;
+$title-color: $text-color-dark;
+$subtitle-color: $text-color-light;
+
+$table-row-title-color: black;
+$label-color: #a3a3a3;
+
+// Table Row
+$table-row-border-color: 1px solid #e8e8e8;
+

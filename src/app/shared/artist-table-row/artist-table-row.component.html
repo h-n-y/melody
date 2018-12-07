@@ -1,0 +1,23 @@
+<div class="artist-table-row table-row">
+       <div class="artist-avatar-placeholder icon-placeholder">
+            <img src="/assets/icons/avatar.png"
+                srcset="/assets/icons/avatar.png 1x,
+                        /assets/icons/avatar@2x.png 2x"
+                alt="artist avatar placeholder" /> 
+       </div>
+       <section class="primary-content">
+           <h4 class="artist-name">
+               {{ artist.artist_name }} 
+           </h4> 
+           <p>
+                2 albums - 12 tracks 
+           </p>
+       </section>
+       <a *ngIf="artist.artist_twitter_url"
+           [href]="artist.artist_twitter_url"
+           target="_blank"
+           class="twitter-link">
+            <img src="/assets/icons/Twitter_Social_Icon_Circle_Color.png"
+                 alt="twitter icon" /> 
+       </a>
+</div>

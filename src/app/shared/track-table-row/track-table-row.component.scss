@@ -1,0 +1,43 @@
+@import '../../../styles/mixins';
+@import '../../../styles/variables';
+
+.track-table-row {
+}
+
+/** prevents track icon from shrinking in case of long track name */
+.icon-placeholder {
+    flex-shrink: 0;
+}
+
+.icon-placeholder img {
+    width: 100%;
+}
+
+.primary-content {
+    overflow: hidden;
+}
+
+h4 {
+    font-weight: 500;
+}
+
+.track-name,
+.track-artist {
+    @include truncate-ellipsis;
+}
+
+.track-name {
+    margin-bottom: 4px;
+    color: $text-color-dark;
+}
+
+.track-artist {
+    font-size: 14px;
+    color: $text-color;
+}
+
+.track-album {
+    font-size: 12px;
+    font-weight: 400;
+    color: $text-color-light;
+}

@@ -1,0 +1,37 @@
+<div id="landing-page">
+       <app-tabs></app-tabs>
+
+       <!-- POPULAR ARTISTS -->
+       <section class="artists">
+           <h4>
+                Popular Artists 
+           </h4> 
+           <div class="loading-indicator" *ngIf="searchingArtists">
+               <app-loading-indicator
+                   label="searching artists"></app-loading-indicator> 
+           </div>
+           <ul *ngIf="popularArtists.length">
+               <li *ngFor="let artist of popularArtists">
+                   <app-artist-table-row
+                       [artist]="artist"></app-artist-table-row> 
+               </li>  
+           </ul>
+       </section>
+
+       <!-- POPULAR TRACKS -->
+       <section class="tracks">
+           <h4>
+                Popular Tracks 
+           </h4> 
+           <div class="loading-indicator" *ngIf="searchingTracks">
+               <app-loading-indicator
+                   label="searching tracks"></app-loading-indicator> 
+           </div>
+           <ul *ngIf="popularTracks.length">
+               <li *ngFor="let track of popularTracks">
+                   <app-track-table-row
+                       [track]="track"></app-track-table-row> 
+               </li> 
+           </ul>
+       </section>
+</div>

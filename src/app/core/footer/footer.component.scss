@@ -1,0 +1,63 @@
+@import '../../../styles/variables';
+@import '../../../styles/mixins';
+
+footer {
+    height: $footer-height-mobile;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 23px;
+    padding-bottom: 23px;
+    background-color: $footer-bg-color;
+    color: $footer-color;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/**
+ * The button crediting musixmatch for lyrics.
+ */
+.btn-musixmatch {
+    @include flex-centered;
+    width: 250px;
+    height: 44px;
+    background-color: #5c5c5c;
+    border-radius: 22px;
+
+    &:hover {
+        background-color: #3a3a3a;
+    }
+}
+
+/**
+ * The developer and source code notices.
+ */
+.dev-note p {
+    text-align: center;
+    line-height: 1.5;
+}
+
+@include for-tablet-landscape-up {
+    footer {
+        padding-top: 0;
+        padding-bottom: 0;
+        padding-left: 24px;
+        flex-direction: row;
+        height: $footer-height;
+        font-size: 12px;
+    }
+
+    .btn-musixmatch {
+        height: 100%;
+        border-radius: 0;
+    }
+
+    .btn-musixmatch {
+        order: 2;
+    }
+
+    .dev-note p {
+        text-align: left;
+    }
+}
