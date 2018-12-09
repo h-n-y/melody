@@ -10,12 +10,10 @@
                <app-loading-indicator
                    label="searching artists"></app-loading-indicator> 
            </div>
-           <ul *ngIf="popularArtists.length">
-               <li *ngFor="let artist of popularArtists">
-                   <app-artist-table-row
-                       [artist]="artist"></app-artist-table-row> 
-               </li>  
-           </ul>
+           <app-table
+                *ngIf="popularArtists.length"
+               [tableType]="TableType.Artist"
+               [items]="popularArtists"></app-table>
        </section>
 
        <!-- POPULAR TRACKS -->
@@ -27,11 +25,9 @@
                <app-loading-indicator
                    label="searching tracks"></app-loading-indicator> 
            </div>
-           <ul *ngIf="popularTracks.length">
-               <li *ngFor="let track of popularTracks">
-                   <app-track-table-row
-                       [track]="track"></app-track-table-row> 
-               </li> 
-           </ul>
+           <app-table
+                *ngIf="popularTracks.length"
+               [tableType]="TableType.Track"
+               [items]="popularTracks"></app-table>
        </section>
 </div>

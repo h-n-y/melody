@@ -19,4 +19,8 @@ import {
 export class TrackTableRowComponent  {
 
     @Input() track: Track;
+
+    // The table row hides the artist name, and moves the album to its position,
+    // when this flag is set to true.
+    @Input() artistKnown = false;
 }

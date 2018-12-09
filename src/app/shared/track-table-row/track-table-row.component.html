@@ -6,17 +6,29 @@
             alt="track album cover" />
    </div>
    <div class="primary-content">
+
+       <!-- Track and Album Names -->
        <div class="track-name-and-album">
            <h4 class="track-name">
                 {{ track.track_name }}   
 
-                <span class="track-album">
+                <span class="track-album" *ngIf="!artistKnown">
                    {{ '( Album: ' + track.album_name + ' )' }} 
                 </span>
            </h4> 
        </div>
-       <p class="track-artist">
+
+       <!-- Artist Name -->
+       <p *ngIf="!artistKnown"
+           class="track-artist">
            {{ track.artist_name }} 
+       </p>
+
+       <!-- Track Album ( replaces artist name's position if displayed in a
+           context where the artist is already known ) -->
+       <p *ngIf="artistKnown"
+            class="track-album">
+           {{ track.album_name }} 
        </p>
    </div>
 </div>

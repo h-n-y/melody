@@ -1,0 +1,50 @@
+@import '../../../styles/variables';
+@import '../../../styles/mixins';
+
+.musicfinder-table {
+}
+
+.table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .table-title {
+        color: $text-color;
+    }
+
+    .btn-see-more {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        color: $orange;
+        font-size: 16px;
+    }
+}
+
+/**
+ * Load More button
+ * Appears below the table.
+ */
+.btn-load-more {
+    @include flex-centered;
+    margin-top: 48px;
+    width: 50%;
+    height: 44px;
+    border-radius: 22px;
+    background-color: $light-grey;
+    font-size: 16px;
+    margin-left: auto;
+    margin-right: auto;
+
+    &:hover {
+        background-color: $navy-blue;
+        color: white;
+        font-weight: 500;
+    }
+}
+
+@include for-tablet-landscape-up {
+    .btn-load-more {
+        background-color: transparent;
+    }
+}

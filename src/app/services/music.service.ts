@@ -13,6 +13,8 @@ import {
 const BASE_URL = 'https://api.musixmatch.com/ws/1.1/';
 const API_KEY = 'bf81b6270df9af232988d9041cd95074';
 const API_KEY_PARAMETER = 'apikey=' + API_KEY;
+const DEFAULT_PAGE = 1;
+const DEFAULT_PAGE_SIZE = 10;
 
 // Development constants
 const DEVELOPMENT_MODE = true;
@@ -36,6 +38,13 @@ export class MusicService {
     // Cache for all tracks by artist acquired so far from API requests.
     private tracksByArtistId: { artistId: number, tracks: Track[] }[] = [];
 
+    // This id is set whenever user navigates to or from the Artist Details page. I'm using this property to
+    // circumvent an issue where components of child routes of the Artist Details page don't have access
+    // to the parent :artistId parameter, which is required when fetching tracks and albums belonging
+    // to the artist.
+    // Note: -1 is considered an invalid id.
+    private currentArtistId = -1;
+
     //
     // Observable sources
     //
@@ -44,9 +53,13 @@ export class MusicService {
     private popularArtistsSource = new Subject<Artist[]>();
     // Subscribed to by Artist Details Page after requesting a specific artist
     private artistForIdSource = new Subject<Artist>();
-    private tracksForArtistSource = new Subject<Track[]>();
+    private tracksForArtistSource = new Subject<Track[] |
+                                                { available: number, tracks: Track[] }>();
 
+    //
     // Observable streams
+    //
+
     popularTracks$ = this.popularTracksSource.asObservable();
     popularArtists$ = this.popularArtistsSource.asObservable();
     artistForId$ = this.artistForIdSource.asObservable();
@@ -113,7 +126,7 @@ export class MusicService {
             const url = urlBase + urlParameters;
 
             // JSONP request
-            this.http.jsonp(url, 'callback').subscribe((res) => {
+            this.http.jsonp(url, 'callback').subscribe((res: any) => {
                 console.log('hope this works...');
                 console.log(res);
 
@@ -144,7 +157,7 @@ export class MusicService {
             const url = urlBase + urlParameters;
             
             // JSONP request
-            this.http.jsonp(url, 'callback').subscribe((res) => {
+            this.http.jsonp(url, 'callback').subscribe((res: any) => {
 
                 // cache and add the artists to the stream
                 const artist_list = res.message.body.artist_list;
@@ -174,7 +187,7 @@ export class MusicService {
             'format=jsonp';
         const url = urlBase + urlParameters;
 
-        this.http.jsonp(url, 'callback').subscribe((res) => {
+        this.http.jsonp(url, 'callback').subscribe((res: any) => {
             console.log('specific artist?');
             console.log(res);
 
@@ -185,24 +198,57 @@ export class MusicService {
     }
 
     private jsonpFetchTracksForArtistWithId(artistId: number) {
+        this.jsonpFetchTracksForArtistWithId(artistId, DEFAULT_PAGE, DEFAULT_PAGE_SIZE);
+    }
+
+    // NOTE: this method very similar to above...
+    // only difference is url params
+    private jsonpFetchTracksForArtistWithId(artistId: number, page: number, pageSize: number) {
         const urlBase = BASE_URL + 'track.search?';
         const urlParameters = API_KEY_PARAMETER + '&' +
             'f_artist_id=' + artistId + '&' +
             'f_has_lyrics=true&' +
-            'format=jsonp';
+            's_track_rating=desc&' +
+            'format=jsonp&' +
+            'page=' + page + '&' +
+            'page_size=' + pageSize;
         const url = urlBase + urlParameters;
 
-        this.http.jsonp(url, 'callback').subscribe((res) => {
+        console.log('URL:' url);
+
+        this.http.jsonp(url, 'callback').subscribe((res: any) => {
             console.log('TRACKS FOR ARTIST', artistId);
             console.log(res);
 
-            const tracks: Track[] = res.message.body.track_list;
+            const tracks: Track[] = res.message.body.track_list.map((item) => item.track);
             this.cacheTracksForArtist(artistId, tracks);
-            this.tracksForArtistSource.next(tracks);
+            //this.tracksForArtistSource.next(tracks);
+            this.tracksForArtistSource.next({
+                available: res.message.header.available,    // total number of available tracks
+                tracks                                      // a subset of the available tracks returned by this response
+            });
         });
     }
 
     constructor(private http: HttpClient) { }
+
+    getCurrentArtistId(): number {
+        return this.currentArtistId;
+    }
+
+    setCurrentArtistId(artistId: number) {
+        const invalidId = artistId < 0;
+        if ( invalidId ) {
+            console.warn(artistId, ' is not a valid artist id');
+            return;
+        }
+
+        this.currentArtistId = artistId;
+    }
+
+    clearCurrentArtistId() {
+        this.currentArtistId = -1;
+    }
 
     fetchPopularTracks() {
         if ( USING_JSONP ) {
@@ -253,14 +299,24 @@ export class MusicService {
 
     fetchTracksForArtistWithId(artistId: number) {
 
+        /*
         // Check cache first.
         const artist = this.tracksByArtistId.find((item) => item.artistId === artistId);
         if ( artist ) {
             this.tracksForArtistSource.next(artist.tracks);
+            return;
         }
+       */
 
         if ( USING_JSONP ) {
             this.jsonpFetchTracksForArtistWithId(artistId);
+        }
+    }
+
+    fetchTracksForArtistWithId(artistId: number, page: number, pageSize: number) {
+
+        if ( USING_JSONP ) {
+            this.jsonpFetchTracksForArtistWithId(artistId, page, pageSize);
         }
     }
 

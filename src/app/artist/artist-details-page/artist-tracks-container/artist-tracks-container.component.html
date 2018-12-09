@@ -1,0 +1,16 @@
+<div class="artist-tracks-container">
+
+    <!-- ARTIST TRACKS -->
+    <div class="tracks-container">
+       <app-table
+            *ngIf="tracks.length"
+            title="Tracks"
+            [tableType]="TableType.Track"
+            [items]="tracks"
+            [artistKnown]="true"
+            [loadMoreBtnVisible]="moreTracksAvailable"
+            [loading]="loadingTracks"
+            (loadMore)="onLoadMoreBtnClick()"
+            ></app-table>
+    </div>
+</div>

@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
+// Enums
+import {
+    TableType,
+} from '../../enums';
+
 // Interfaces
 import {
     Track,
@@ -16,6 +21,9 @@ const USE_MUSIXMATCH = false;
     styleUrls: [ './landing-page.component.scss' ]
 })
 export class LandingPageComponent implements OnInit  {
+
+    // Expose enums to template.
+    TableType = TableType;
 
     searchingArtists = false;
     searchingTracks = false;

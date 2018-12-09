@@ -1,0 +1,37 @@
+<div class="musicfinder-table">
+    <section class="table-header">
+        <h4 class="table-title">
+            {{ title }} 
+        </h4> 
+        <button *ngIf="seeMoreBtnVisible"
+            class="btn-see-more"
+            (click)="onSeeMoreBtnClick()">
+            see more 
+        </button>
+    </section> 
+    <div class="table-rows" [ngSwitch]="tableType">
+
+        <!-- TRACK TABLE -->
+        <ul *ngSwitchCase="TableType.Track">
+            <li *ngFor="let track of items; let i = index;">
+                <app-track-table-row
+                    [track]="track"
+                    [artistKnown]="artistKnown"></app-track-table-row> 
+            </li> 
+        </ul>
+
+        <!-- ARTIST TABLE -->
+        <ul *ngSwitchCase="TableType.Artist">
+            <li *ngFor="let artist of items; let i = index;">
+                <app-artist-table-row
+                    [artist]="artist"></app-artist-table-row> 
+            </li> 
+        </ul>
+    </div><!-- end .table-rows -->
+
+    <button *ngIf="loadMoreBtnVisible"
+         class="btn-load-more"
+        (click)="onLoadMoreBtnClick()">
+        Load More  
+    </button>
+</div>

@@ -1,0 +1,29 @@
+<div id="artist-details-page">
+
+    <div class="primary-content" *ngIf="artist">
+
+       <!-- ARTIST IMAGE -->
+       <div class="artist-image">
+            <img src="/assets/icons/avatar-large.png"
+                srcset="/assets/icons/avatar-large.png 1x,
+                        /assets/icons/avatar-large@2x.png 2x"
+                alt="artist image placeholder" />
+       </div>
+
+       <!-- ARTIST DETAILS -->
+       <section class="artist-details">
+           <h2 class="artist-name"
+               (click)="onArtistNameClick()">
+               {{ artist.artist_name }} 
+           </h2> 
+           <h4 class="artist-albums-and-tracks">
+                2 albums - 12 tracks 
+           </h4>
+       </section>
+
+       <!-- Outlet for Top Tracks/Albums, All Tracks, and All Albums
+           pagelets -->
+       <router-outlet></router-outlet>
+
+    </div>
+</div>
