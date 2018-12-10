@@ -38,9 +38,12 @@ export class MusicService {
     // Cache for all tracks by artist acquired so far from API requests.
     private tracksByArtistId: { artistId: number, tracks: Track[] }[] = [];
 
+    // Cache for all lyrics acquired so far from API requests.
+    private allLyricsSoFar: { trackId: number, lyrics: Lyrics }[] = [];
+
     // This id is set whenever user navigates to or from the Artist Details page. I'm using this property to
     // circumvent an issue where components of child routes of the Artist Details page don't have access
-    // to the parent :artistId parameter, which is required when fetching tracks and albums belonging
+    // to the parent :artistId route parameter, which is required when fetching tracks and albums belonging
     // to the artist.
     // Note: -1 is considered an invalid id.
     private currentArtistId = -1;
@@ -55,6 +58,9 @@ export class MusicService {
     private artistForIdSource = new Subject<Artist>();
     private tracksForArtistSource = new Subject<Track[] |
                                                 { available: number, tracks: Track[] }>();
+    // Subscribed to by Track Details Page
+    private trackForIdSource = new Subject<Track>();
+    private trackLyricsForIdSource = new Subject<Lyrics>(); // lyrics for associated track id
 
     //
     // Observable streams
@@ -64,6 +70,8 @@ export class MusicService {
     popularArtists$ = this.popularArtistsSource.asObservable();
     artistForId$ = this.artistForIdSource.asObservable();
     tracksForArtist$ = this.tracksForArtistSource.asObservable();
+    trackForId$ = this.trackForIdSource.asObservable();
+    trackLyricsForId$ = this.trackLyricsForIdSource.asObservable();
 
     /**
      * Adds all artists in `artists` that have not yet been cached
@@ -230,6 +238,41 @@ export class MusicService {
         });
     }
 
+    private jsonpFetchTrackWithId(trackId: number) {
+        const urlBase = BASE_URL + 'track.get?';
+        const urlParameters = API_KEY_PARAMETER + '&' +
+            'track_id=' + trackId + '&' +
+            'format=jsonp';
+        const url = urlBase + urlParameters; 
+
+        this.http.jsonp(url, 'callback').subscribe((res: any) => {
+            console.log('TRACK FOR ID', trackId);
+            console.log(res);
+
+            const track: Track = res.message.body.track;
+            this.trackForIdSource.next(track)
+
+            window.localStorage.setItem('track', JSON.stringify(track));
+        });
+    }
+
+    private jsonpFetchLyricsForTrackWithId(trackId: number) {
+        const urlBase = BASE_URL + 'track.lyrics.get?';
+        const urlParameters = API_KEY_PARAMETER + '&' +
+            'track_id=' + trackId + '&' +
+            'format=jsonp';
+        const url = urlBase + urlParameters;
+
+        this.http.jsonp(url, 'callback').subscribe((res: any) => {
+            console.log('LYRICS:');
+            console.log(res);
+
+            const lyrics: Lyrics = res.message.body.lyrics;
+            // TODO: cache lyrics
+            this.trackLyricsForIdSource.next(lyrics);
+        });
+    }
+
     constructor(private http: HttpClient) { }
 
     getCurrentArtistId(): number {
@@ -320,6 +363,23 @@ export class MusicService {
         }
     }
 
+
+    fetchTrackWithId(trackId: number) {
+        if ( USING_JSONP ) {
+            this.jsonpFetchTrackWithId(trackId);
+        }
+    }
+
+
+    fetchLyricsForTrackWithId(trackId: number) {
+        // TODO:
+        // First check if already cached.
+
+        if ( USING_JSONP ) {
+            this.jsonpFetchLyricsForTrackWithId(trackId);
+        }
+    }
+
     /**
      * Checks the status code of a musixmatch api response.
      * @param statusCode The status code of the api response.
@@ -362,9 +422,7 @@ export class MusicService {
     }
 }
 
-/*
-function dataCallback(response) {
-    console.log('DATA CALLBACK');
-    console.log(response);
+function callback(res) {
+    console.log('NO WAY*********');
+    console.log(res);
 }
-*/

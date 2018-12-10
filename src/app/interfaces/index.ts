@@ -12,6 +12,14 @@ export interface Track {
     track_rating: number;
 }
 
+export interface Lyrics {
+    lyrics_id: number;
+    restricted: number;
+    lyrics_body: string;
+    pixel_tracking_url: string;
+    lyrics_copyright: string;
+}
+
 export interface Artist {
     artist_id: number;
     artist_name: string;

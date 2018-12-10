@@ -1,0 +1,55 @@
+<div id="track-details-page">
+
+       <!-- Track Album Image -->
+       <div class="track-album-image">
+            <img src="/assets/icons/track-icon.png"
+                srcset="/assets/icons/track-icon.png 1x,
+                        /assets/icons/track-icon@2x.png 2x"
+                alt="track album icon" /> 
+       </div>
+
+       <!-- Track Details -->
+       <section class="track-details">
+           <h2 class="track-name">
+               {{ track.track_name }} 
+
+               <!-- For tablet landscape and up -->
+               <span class="album-name">
+                    {{ '( Album: ' + track.album_name + ' )' }} 
+               </span>
+           </h2> 
+           <h3 class="artist-name">
+                {{ track.artist_name }} 
+           </h3>
+
+           <!-- Mobile -->
+           <p class="album-name">
+                {{ track.album_name }}  
+           </p>
+       </section>
+
+       <!-- LYRICS -->
+       <section class="track-lyrics" *ngIf="lyrics">
+           <div class="track-lyrics-lines">
+               <h4>
+                    Lyrics 
+               </h4> 
+               <p *ngFor="let line of lyricsLines">
+                   {{ line }}
+                   <br> 
+               </p> 
+           </div>
+
+           <!-- Lyrics Copyright -->
+           <p class="track-lyrics-copyright">
+               {{ lyrics.lyrics_copyright }} 
+           </p>
+       </section>
+
+        <!-- MUSIXMATCH API IMAGE PIXEL
+           ( required if requesting track lyrics from api ) -->
+        <img *ngIf="lyrics && lyrics.pixel_tracking_url"
+            [src]="lyrics.pixel_tracking_url"
+            alt="musixmatch api pixel image" />
+    
+</div>
