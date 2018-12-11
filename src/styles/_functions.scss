@@ -1,0 +1,8 @@
+$z-indices: (
+    modal: 100,
+    modal-overlay: 99,
+);
+
+@function z($layer) {
+    @return map-get($z-indices, $layer);
+}

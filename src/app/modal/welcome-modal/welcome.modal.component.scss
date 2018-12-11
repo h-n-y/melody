@@ -1,0 +1,67 @@
+@import '../../../styles/mixins';
+@import '../../../styles/variables';
+
+#welcome-modal {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    transform: translateY(10px) scale(0.95);
+    will-change: transform;
+    transition: 0.2s ease-out;
+    background-color: white;
+    opacity: 0;
+    border-radius: 22px;
+
+    &.visible {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-header {
+    color: $text-color;
+    span {
+        font-weight: 500;
+        color: $text-color-dark;
+    }
+}
+
+.about-app p {
+    margin-top: 12px;
+    margin-bottom: 24px;
+    font-size: 16px;
+    font-weight: 300;
+    color: $text-color-light;
+    text-align: center;
+    line-height: 1.5;
+}
+
+/**
+ * 'Got it' button
+ */
+.btn-got-it {
+    border-radius: 22px;
+    font-size: 20px;
+    width: 200px;
+    height: 44px;
+    color: $text-color;
+
+    &:hover {
+        background-color: $light-grey;
+    }
+}
+
+@include for-tablet-landscape-up {
+
+    #welcome-modal {
+        //width: 50%;
+        padding-left: 64px;
+        padding-right: 64px;
+    }
+
+    .about-app p {
+        font-size: 20px;
+    }
+}

@@ -1,4 +1,5 @@
-<app-header></app-header>
+<app-header
+    (search)="onSearchBarClick()"></app-header>
 
 <div id="primary-content">
     <!-- OUTLET FOR PAGE CONTENT -->
@@ -6,3 +7,8 @@
 </div>
 
 <app-footer></app-footer>
+
+<!-- MODALS -->
+<div id="modal-container" class="hidden"></div>
+<div id="modal-overlay"
+    (click)="onModalOverlayClick()" class="hidden"></div>

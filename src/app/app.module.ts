@@ -3,11 +3,17 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
+import { ModalModule } from './modal/modal.module';
 
 import { AppComponent } from './app.component';
 
 // Services
 import { MusicService } from './services/music.service';
+import { DOMService } from './services/dom.service';
+import { ModalService } from './services/modal.service';
+
+// Entry Components ( modals )
+import { WelcomeModalComponent } from './modal/welcome-modal/welcome.modal.component';
 
 @NgModule({
   declarations: [
@@ -19,9 +25,15 @@ import { MusicService } from './services/music.service';
     HttpClientJsonpModule,
     AppRoutingModule,
     CoreModule,
+    ModalModule,
   ],
   providers: [
       MusicService, 
+      DOMService,
+      ModalService,
+  ],
+  entryComponents: [
+      WelcomeModalComponent,
   ],
   bootstrap: [AppComponent]
 })

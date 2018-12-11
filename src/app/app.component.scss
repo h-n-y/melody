@@ -1,5 +1,6 @@
 @import '../styles/variables';
 @import '../styles/mixins';
+@import '../styles/functions';
 
 #primary-content {
     /** 'pushes' footer down to bottom of viewport */
@@ -13,3 +14,49 @@
         min-height: calc(100vh - #{$header-height + $footer-height});
     }
 }
+
+/**
+ * MODAL-RELATED STYLES
+ */
+
+.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#modal-container,
+#modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+#modal-container {
+    @include flex-centered;
+    z-index: z('modal');
+    pointer-events: none;
+}
+
+#modal-overlay {
+    z-index: z('modal-overlay'); 
+    background-color: rgba(black, 0.74);
+    transition: 0.25s ease-out;
+    opacity: 1;
+    pointer-events: none;
+
+    &.hidden {
+        opacity: 0;
+    }
+
+    &.show {
+        pointer-events: auto;
+    }
+}
+

@@ -1,3 +1,12 @@
 a {
     color: $link-color;
 }
+
+/**
+ * MODALS
+ */
+
+/** prevents modal from dismissing when it's clicked */
+.modal {
+    pointer-events: all;
+}
