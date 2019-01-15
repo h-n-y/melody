@@ -28,6 +28,7 @@
 *~
 *.swo
 *.swp
+*.swn
 
 # misc
 /.sass-cache
