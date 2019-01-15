@@ -21,12 +21,22 @@ import {
     SearchCategory,
 } from '../../enums';
 
+/**
+ * Search Modal
+ *
+ * Displays a search bar for user to enter search queries and presents
+ * the results of those queries.
+ *
+ */
 @Component({
     templateUrl: './search.modal.component.html',
     styleUrls: [ './search.modal.component.scss' ]
 })
 export class SearchModalComponent implements OnInit, AfterViewInit {
 
+    // Event listener for scrolling on the search results element.
+    // Adds a box shadow to the search bar if the search results are scrolled
+    // any amount down and removes otherwise.
     private handleScroll = ((e) => {
         console.log(e.target.scrollTop); 
         const scroll = e.target.scrollTop;
@@ -46,8 +56,10 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
     // box shadow to the search bar.
     @ViewChild('searchResults') searchResultsElement: ElementRef;
 
+    // Dismisses this modal when called. Provided by the modal service.
     @Input() dismiss: () => void;
 
+    // Flag for controlling search bar box shadow visibility
     searchBarShadowVisible = false;
 
     // Flags indicating which categories are awaiting responses from http requests
@@ -58,14 +70,18 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
         lyrics: false
     };
 
-    query = '';
-    artists: Artist[] = [];
+    query = ''; // the user-entered search query
+
+    artists: Artist[] = []; // artists whose name match the search query
     tracks: Track[] = [];   // tracks whose title matches the search query
     lyrics: Track[] = [];   // tracks whose lyrics match the search query
 
+    /**
+     * @returns `true` iff any of the search flags are set to true.
+     */
     get searchInProgress(): boolean {
-        return this.searching.artists &&
-                this.searching.tracks &&
+        return this.searching.artists ||
+                this.searching.tracks ||
                 this.searching.lyrics;
     }
 
@@ -75,10 +91,18 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
 
     }
 
+    /**
+     * @returns `true` iff any search results have been received.
+     */
     get resultsExist(): boolean {
         return this.artists.length || this.tracks.length || this.lyrics.length;
     }
 
+    /**
+     * Requests the music service to search for artist matching the query.
+     * @param query - The query to match artists against.
+     * @returns An Observable that can be subscribed to for search results.
+     */
     private listenForArtistSearchResults(query: string): Observable<any> {
         if ( query ) {
             return this.musicService.searchArtists(query);
@@ -87,6 +111,11 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
         return [];
     }
 
+    /**
+     * Requests the music service to search for tracks matching the query.
+     * @param query - The query to match tracks against.
+     * @returns An Observable that can be subscribed to for search results.
+     */
     private listenForTrackSearchResults(query: string): Observable<any> {
         if ( query ) {
             return this.musicService.searchTracks(query);
@@ -95,6 +124,11 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
         return [];
     }
 
+    /**
+     * Requests the music service to search for lyrics matching the query.
+     * @param query - The query to match lyrics against.
+     * @returns An Observable that can be subscribed to for search results.
+     */
     private listenForLyricsSearchResults(query: string): Observable<any> {
         if ( query ) {
             return this.musicService.searchLyrics(query);
@@ -103,6 +137,12 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
         return [];
     }
 
+    /**
+     * The primary method for processing search results. Called in ngOnInit.
+     *
+     * Listens to the search form input observable with a debounce time of 500ms and
+     * then makes search requests to the music service for those input values.
+     */
     private listenForSearchQueryResults() {
 
         // Debounce time is one half second.
@@ -189,6 +229,11 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
 
     }
 
+    /**
+     * Set the focus on the search bar.
+     * Called after view initialization so user doesn't have to waste a click
+     * focusing the search bar manually.
+     */
     private focusSearchBar() {
         this.searchBar.nativeElement.focus();
     }
@@ -200,6 +245,11 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
         this.lyrics = JSON.parse(window.localStorage.getItem('searchLyrics'));
     }
 
+    /**
+     * Navigates to the Search Results page for the given parameters.
+     * @param query - The query whose results are to be given.
+     * @param searchCategory - The initial search category the Search Results page should display.
+     */
     private navigateToSearchResultsPage(query: string, searchCategory: SearchCategory) {
         this.router.navigate(['/search'], {
             queryParams: {
@@ -208,6 +258,10 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
             }});
     }
 
+    /**
+     * Navigates to the Track Details page for the given track.
+     * @param track - The track to be presented in the details page.
+     */
     private navigateToTrackDetailsPage(track: Track) {
         const url = '/track/' + track.track_id;
         this.router.navigate([url]);
@@ -216,6 +270,7 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
     constructor(private musicService: MusicService,
                private router: Router) { }
 
+    // A form wrapper for the search bar.
     searchForm = new FormGroup({
         searchQuery: new FormControl(''),
     });
@@ -223,6 +278,10 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
     onSubmitQuery() {
     }
 
+    /**
+     * Navigates to the Search Results page for artists.
+     * Called after user clicks the 'see more' button on top of the Artists table.
+     */
     onSeeMoreArtistsBtnClick() {
         console.log('see more artists');
         const query = this.query;
@@ -231,6 +290,10 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
         this.dismiss();
     }
 
+    /**
+     * Navigates to the Search Results page for tracks.
+     * Called after user clicks the 'see more' button on top of the Tracks table.
+     */
     onSeeMoreTracksBtnClick() {
         console.log('see more tracks');
         const query = this.query;
@@ -239,6 +302,10 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
         this.dismiss();
     }
 
+    /**
+     * Navigates to the Search Results page for lyrics.
+     * Called after user clicks the 'see more' button on top of the Lyrics table.
+     */
     onSeeMoreLyricsBtnClick() {
         console.log('see more lyrics');
         const query = this.query;
@@ -247,6 +314,10 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
         this.dismiss();
     }
 
+    /**
+     * Navigates to the Search Results page for *all* results ( Artists, Tracks, and Lyrics )
+     * Called after user clicks the 'See All Results' button at the bottom of the modal.
+     */
     onSeeAllResultsBtnClick() {
         console.log('see all results');
         const query = this.query;
@@ -255,6 +326,11 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
         this.dismiss();
     }
 
+    /**
+     * Navigates to the Artist Details page for the given artist.
+     * Called when user clicks one of the artist table rows in the search results.
+     * @param artist - The selected artist.
+     */
     onArtistSelected(artist: Artist) {
         console.log(artist);
         const url = '/artist/' + artist.artist_id;
@@ -263,6 +339,11 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
         this.dismiss();
     }
 
+    /**
+     * Navigates to the Track Details page for the given track.
+     * Called when user clicks one of the track table rows in the search results.
+     * @param track - The selected track.
+     */
     onTrackSelected(track: Track) {
         console.log(track);
         this.navigateToTrackDetailsPage(track);
@@ -270,12 +351,21 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
         this.dismiss();
     }
 
+    /**
+     * Navigates to the Track Details page for the given track lyrics.
+     * Called when user clicks one of the lyrics table rows in the search results.
+     * @param lyricsTrack - The selected lyrics track.
+     */
     onLyricsSelected(lyricsTrack: Track) {
         console.log(lyricsTrack);
         this.navigateToTrackDetailsPage(lyricsTrack);
 
         this.dismiss();
     }
+
+    //
+    // Lifecycle Hooks
+    //
 
     ngOnInit() {
         //this.loadDataFromLocalStorage();

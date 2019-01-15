@@ -33,9 +33,10 @@ export class SearchResultsPageComponent implements OnInit  {
     TableType = TableType;
     SearchCategory = SearchCategory;
 
-    query = '';
+    query = ''; // The query whose results are displayed on this page.
     searchCategory: SearchCategory;
 
+    // All the search results for the given query, plus useful api-related data.
     searchResults = {
         artists: {
             apiPageNum: 1,
@@ -54,24 +55,36 @@ export class SearchResultsPageComponent implements OnInit  {
         },
     };
 
+    /**
+     * @returns `true` iff the Artists section should be visible.
+     */
     get artistsVisible(): boolean {
         const category = this.searchCategory;
         return category === SearchCategory.All ||
                 category === SearchCategory.Artists;
     }
 
+    /**
+     * @returns `true` iff the Tracks section should be visible.
+     */
     get tracksVisible(): boolean {
         const category = this.searchCategory;
         return category === SearchCategory.All ||
                 category === SearchCategory.Tracks;
     }
 
+    /**
+     * @returns `true` iff the Lyrics section should be visible.
+     */
     get lyricsVisible(): boolean {
         const category = this.searchCategory;
         return category === SearchCategory.All ||
                 category === SearchCategory.Lyrics;
     }
 
+    /**
+     * @returns `true` iff the api has additional artists available for the search query.
+     */
     get moreArtistResultsAvailable(): boolean {
         // check that the most recently requested page is not the
         // last available page
@@ -79,6 +92,9 @@ export class SearchResultsPageComponent implements OnInit  {
         return artists.apiPageNum < artists.apiMaxPageNum;
     }
 
+    /**
+     * @returns `true` iff the api has additional tracks available for the search query.
+     */
     get moreTrackResultsAvailable(): boolean {
         // check that the most recently requested page is not the
         // last available page
@@ -86,6 +102,9 @@ export class SearchResultsPageComponent implements OnInit  {
         return tracks.apiPageNum < tracks.apiMaxPageNum;
     }
 
+    /**
+     * @returns `true` iff the api has additional lyrics available for the search query.
+     */
     get moreLyricsResultsAvailable(): boolean {
         // check that the most recently requested page is not the
         // last available page
@@ -235,21 +254,40 @@ export class SearchResultsPageComponent implements OnInit  {
                 private router: Router,
                 private musicService: MusicService) { }
 
+    /**
+     * Navigates to the Artist Details page for the given artist.
+     * Called when user clicks an artist table row.
+     * @param artist - The selected artist.
+     */
     onArtistSelected(artist: Artist) {
         const url = '/artist/' + artist.artist_id;
         this.router.navigate([url]);
     }
 
+    /**
+     * Navigates to the Track Details page for the given track.
+     * Called when user clicks a track table row.
+     * @param track - The selected track.
+     */
     onTrackSelected(track: Track) {
         const url = '/track/' + track.track_id;
         this.router.navigate([url]);
     }
 
+    /**
+     * Navigates to the Track Details page for the given track lyrics.
+     * Called when user clicks a track lyrics table row.
+     * @param trackLyrics - The selected track lyrics.
+     */
     onLyricsSelected(trackLyrics: Track) {
         const url = '/track/' + trackLyrics.track_id;
         this.router.navigate([url]);
     }
 
+    /**
+     * Presents all search results.
+     * Called when user clicks the 'All' tab.
+     */
     onAllTabSelected() {
         console.log('All Tab');
         //this.searchCategory = SearchCategory.All;
@@ -261,6 +299,10 @@ export class SearchResultsPageComponent implements OnInit  {
         });
     }
 
+    /**
+     * Filters search results to display only artists.
+     * Called when user clicks the 'Artists' tab.
+     */
     onArtistTabSelected() {
         console.log('Artist Tab');
         //this.searchCategory = SearchCategory.Artists;
@@ -272,6 +314,10 @@ export class SearchResultsPageComponent implements OnInit  {
         });
     }
 
+    /**
+     * Filters search results to display only tracks.
+     * Called when user clicks the 'Artists' tab.
+     */
     onTrackTabSelected() {
         console.log('Track Tab');
         //this.searchCategory = SearchCategory.Tracks;
@@ -283,6 +329,10 @@ export class SearchResultsPageComponent implements OnInit  {
         });
     }
 
+    /**
+     * Filters search results to display only lyrics.
+     * Called when user clicks the 'Lyrics' tab.
+     */
     onLyricsTabSelected() {
         console.log('Lyrics Tab');
         //this.searchCategory = SearchCategory.Lyrics;
@@ -329,6 +379,10 @@ export class SearchResultsPageComponent implements OnInit  {
 
         console.log('page = ', page);
     }
+
+    //
+    // Lifecycle Hooks
+    //
 
     ngOnInit() {
         this.listenForQueryParameters();

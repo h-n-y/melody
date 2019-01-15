@@ -5,6 +5,11 @@ import {
     Artist,
 } from '../../interfaces';
 
+/**
+ * Artist Table Row
+ *
+ * Displays artist data in a table row.
+ */
 @Component({
     selector: 'app-artist-table-row',
     templateUrl: './artist-table-row.component.html',

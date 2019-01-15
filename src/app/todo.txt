@@ -29,3 +29,5 @@
 - need to push footer down for short content
 
 - remove localstorage functionality
+
+- remove JSONP-related conditional searches --> just use jsonp all the time
