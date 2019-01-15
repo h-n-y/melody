@@ -3,6 +3,9 @@
 
 #landing-page {
     padding: 32px 12px 64px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /**
@@ -45,5 +48,12 @@ h4 {
         width: 50%;
         margin-left: auto;
         margin-right: auto;
+    }
+}
+
+@include for-desktop-up {
+    .artists,
+    .tracks {
+        width: 50%;
     }
 }

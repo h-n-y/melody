@@ -1,8 +1,10 @@
 <div id="landing-page">
-       <app-tabs></app-tabs>
+       <app-tabs
+            [activeTab]="activeTab"
+            (selected)="onTabSelected($event)"></app-tabs>
 
        <!-- POPULAR ARTISTS -->
-       <section class="artists">
+       <section class="artists" *ngIf="artistsVisible">
            <h4>
                 Popular Artists 
            </h4> 
@@ -13,11 +15,12 @@
            <app-table
                 *ngIf="popularArtists.length"
                [tableType]="TableType.Artist"
-               [items]="popularArtists"></app-table>
+               [items]="popularArtists"
+               (artistSelected)="onArtistSelected($event)"></app-table>
        </section>
 
        <!-- POPULAR TRACKS -->
-       <section class="tracks">
+       <section class="tracks" *ngIf="tracksVisible">
            <h4>
                 Popular Tracks 
            </h4> 
@@ -28,6 +31,7 @@
            <app-table
                 *ngIf="popularTracks.length"
                [tableType]="TableType.Track"
-               [items]="popularTracks"></app-table>
+               [items]="popularTracks"
+               (trackSelected)="onTrackSelected($event)"></app-table>
        </section>
 </div>

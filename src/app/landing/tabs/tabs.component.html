@@ -1,19 +1,19 @@
 <ul class="category-tabs">
-    <li>
+    <li (click)="onTabClick(TabCategory.All)">
         <a class="tab-link"
-            routerLink="/home/all" routerLinkActive="tab-link-active">
+            [class.tab-link-active]="activeTab === TabCategory.All">
             All 
         </a> 
     </li> 
-    <li>
+    <li (click)="onTabClick(TabCategory.Artists)">
         <a class="tab-link"
-            routerLink="/home/artists" routerLinkActive="tab-link-active">
+            [class.tab-link-active]="activeTab === TabCategory.Artists">
             Artists 
         </a> 
     </li> 
-    <li>
+    <li (click)="onTabClick(TabCategory.Tracks)">
         <a class="tab-link"
-            routerLink="/home/tracks" routerLinkActive="tab-link-active">
+            [class.tab-link-active]="activeTab === TabCategory.Tracks">
             Tracks 
         </a> 
     </li> 
