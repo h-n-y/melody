@@ -1,0 +1,66 @@
+<div id="search-modal-wrapper">
+    <div id="search-modal" class="modal">
+        <form [formGroup]="searchForm" (ngSubmit)="onSubmitQuery()"
+            [class.box-shadow]="searchBarShadowVisible">
+            <input type="search" formControlName="searchQuery" 
+                #searchBar
+                placeholder="Search Artist, Track, or Lyrics"/> 
+        </form>
+
+        <div class="search-results" #searchResults>
+
+            <!-- SEARCHING INDICATOR -->
+            <app-loading-indicator
+                *ngIf="searchInProgress"
+                label="Searching"
+                ></app-loading-indicator>
+
+            <!-- ARTIST MATCHES -->
+            <div class="artists-table-wrapper">
+               <app-table
+                    *ngIf="artists.length"
+                    title="Artists"
+                    [tableType]="TableType.Artist"
+                    [items]="artists.slice(0, 3)"
+                    [artistKnown]="false"
+                    [seeMoreBtnVisible]="true"
+                    (seeMore)="onSeeMoreArtistsBtnClick()"
+                    (artistSelected)="onArtistSelected($event)"></app-table>
+            </div>
+
+            <!-- TRACK MATCHES -->
+            <div class="tracks-table-wrapper">
+                <app-table
+                    *ngIf="tracks.length"  
+                    title="Tracks"
+                    [tableType]="TableType.Track"
+                    [items]="tracks.slice(0, 3)"
+                    [artistKnown]="false"
+                    [seeMoreBtnVisible]="true"
+                    (seeMore)="onSeeMoreTracksBtnClick()"
+                    (trackSelected)="onTrackSelected($event)"></app-table> 
+            </div>
+
+            <!-- LYRICS MATCHES -->
+            <div class="lyrics-table-wrapper">
+                <app-table
+                    *ngIf="lyrics.length"
+                    title="Lyrics"
+                    [tableType]="TableType.Track"
+                    [items]="lyrics.slice(0, 3)"
+                    [artistKnown]="false"
+                    [seeMoreBtnVisible]="true"
+                    (seeMore)="onSeeMoreLyricsBtnClick()"
+                    (trackSelected)="onLyricsSelected($event)"></app-table> 
+            </div>
+
+            <!-- ALL RESULTS BUTTON -->
+            <button
+                *ngIf="resultsExist"
+                class="btn-all-results"
+                (click)="onSeeAllResultsBtnClick()">
+                See All Results  
+            </button>
+        </div>
+    </div>
+</div>
