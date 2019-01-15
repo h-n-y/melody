@@ -1,0 +1,51 @@
+<ul class="search-results-tabs">
+
+    <!-- ALL TAB -->
+    <li class="results-tab"
+        [class.results-tab-active]="category === SearchCategory.All"
+        (click)="onTabClick(SearchCategory.All)">
+        <label>
+            All
+            <span class="item-count">
+                {{ '( ' + allTabCount + ' )' }} 
+            </span>
+        </label> 
+    </li> 
+
+    <!-- ARTIST TAB -->
+    <li class="results-tab"
+        [class.results-tab-active]="category === SearchCategory.Artists"
+        (click)="onTabClick(SearchCategory.Artists)">
+        <label>
+            Artists
+            <span class="item-count">
+                {{ '( ' + artistTabCount + ' )' }} 
+            </span>
+        </label> 
+    </li> 
+
+    <!-- TRACK TAB -->
+    <li class="results-tab"
+        [class.results-tab-active]="category === SearchCategory.Tracks"
+        (click)="onTabClick(SearchCategory.Tracks)">
+        <label>
+            Tracks
+            <span class="item-count">
+                {{ '( ' + trackTabCount + ' )' }} 
+            </span>
+        </label> 
+    </li> 
+
+    <!-- LYRICS TAB -->
+    <li class="results-tab"
+        [class.results-tab-active]="category === SearchCategory.Lyrics"
+        (click)="onTabClick(SearchCategory.Lyrics)">
+        <label>
+            Lyrics
+            <span class="item-count">
+                {{ '( ' + lyricsTabCount + ' )' }} 
+            </span>
+        </label> 
+    </li> 
+
+</ul>

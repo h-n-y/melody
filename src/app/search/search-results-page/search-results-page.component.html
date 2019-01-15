@@ -1,0 +1,87 @@
+<div id="search-results-page">
+
+    <!-- CATEGORY TABS ( desktop only ) -->
+    <div class="search-results-tabs">
+        <app-search-results-tabs
+            [category]="searchCategory"
+            [numArtists]="searchResults.artists.list.length"
+            [numTracks]="searchResults.tracks.list.length"
+            [numLyrics]="searchResults.lyrics.list.length"
+            (allSelected)="onAllTabSelected()"
+            (artistsSelected)="onArtistTabSelected()"
+            (tracksSelected)="onTrackTabSelected()"
+            (lyricsSelected)="onLyricsTabSelected()"></app-search-results-tabs>
+    </div>
+
+    <!-- PRIMARY CONTENT -->
+    <section class="primary-content">
+        <h2 *ngIf="query && searchCategory"
+            class="results-header">
+            {{ searchCategory + ' results for "' + query + '"' }} 
+        </h2>
+
+        <!-- SEARCH RESULTS -->
+        <div class="search-results">
+            
+            <!-- ARTISTS -->
+            <div class="search-results-artists"
+                *ngIf="artistsVisible">
+                <app-table
+                    *ngIf="searchResults.artists.list.length"
+                    title="Artists"
+                    [tableType]="TableType.Artist"
+                    [items]="searchResults.artists.list"
+                    [artistKnown]="false"
+                    [seeMoreBtnVisible]="false"
+                    (artistSelected)="onArtistSelected($event)"></app-table>
+
+                <button *ngIf="moreArtistResultsAvailable &&
+                                searchCategory === SearchCategory.Artists"
+                    class="btn-load-more"
+                    (click)="onLoadMoreBtnClick()">
+                    Load More 
+                </button>
+            </div> 
+
+            <!-- TRACKS -->
+            <div class="search-results-tracks"
+                *ngIf="tracksVisible">
+                <app-table
+                    *ngIf="searchResults.tracks.list.length"  
+                    title="Tracks"
+                    [tableType]="TableType.Track"
+                    [items]="searchResults.tracks.list"
+                    [artistKnown]="false"
+                    [seeMoreBtnVisible]="false"
+                    (trackSelected)="onTrackSelected($event)"></app-table> 
+
+                <button *ngIf="moreTrackResultsAvailable &&
+                                searchCategory === SearchCategory.Tracks"
+                    class="btn-load-more"
+                    (click)="onLoadMoreBtnClick()">
+                    Load More 
+                </button>
+            </div> 
+
+            <!-- LYRICS -->
+            <div class="search-results-lyrics"
+                *ngIf="lyricsVisible">
+                <app-table
+                    *ngIf="searchResults.lyrics.list.length"
+                    title="Lyrics"
+                    [tableType]="TableType.Track"
+                    [items]="searchResults.lyrics.list"
+                    [artistKnown]="false"
+                    [seeMoreBtnVisible]="false"
+                    (trackSelected)="onLyricsSelected($event)"></app-table> 
+
+                <button *ngIf="moreLyricsResultsAvailable &&
+                                searchCategory === SearchCategory.Lyrics"
+                    class="btn-load-more"
+                    (click)="onLoadMoreBtnClick()">
+                    Load More 
+                </button>
+            </div> 
+        </div>
+    </section>
+</div>

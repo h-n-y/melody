@@ -1,0 +1,89 @@
+@import '../../../styles/mixins';
+@import '../../../styles/variables';
+
+#search-results-page {
+    padding-bottom: 128px;
+}
+
+.results-header {
+    text-align: center;
+    margin-top: 24px;
+    margin-bottom: 12px;
+}
+
+/** SEARCH RESULTS */
+.search-results {
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+/** table wrappers for each search category */
+[class^="search-results-"] {
+    margin-top: 36px;
+}
+
+/** TABS:
+ * for desktop layout only
+ */
+.search-results-tabs {
+    display: none;
+}
+
+/** LOAD MORE BUTTON */
+.btn-load-more {
+    font-size: 14px;
+    display: block;
+    margin-top: 16px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-right: 32px;
+    padding-left: 32px;
+    height: 44px;
+    border-radius: 22px;
+    color: $orange;
+
+    &:hover {
+        background-color: $light-grey;
+    }
+}
+
+@include for-tablet-landscape-up {
+    .search-results {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .results-header {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .search-results,
+    .results-header {
+        width: 75%;
+    }
+}
+
+@include for-desktop-up {
+    .search-results {
+        padding-left: 64px;
+        padding-right: 64px;
+    }
+
+    .search-results,
+    .results-header {
+        width: 50%;
+    }
+
+    .search-results-tabs {
+        margin-top: 0;
+        padding-right: 64px;
+        position: fixed;
+        top: 100px;
+        left: 0;
+        display: flex;
+        justify-content: flex-end;
+        width: 25%;
+        border-right: 1px solid $light-grey;
+    }
+}

@@ -1,0 +1,34 @@
+@import '../../../../styles/variables';
+
+.search-results-tabs {
+    display: flex;
+    flex-direction: column;
+}
+
+.results-tab {
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-end;
+    border-right: 4px solid white;
+    font-size: 18px;
+    margin-bottom: 18px;
+    padding-right: 18px;
+
+    label {
+        cursor: pointer;
+    }
+
+    /** the parenthesized number of items to the right of the tab name */
+    .item-count {
+        color: #a2a2a2;
+    }
+
+    &:hover {
+        border-right-color: $light-grey; 
+    }
+
+    &.results-tab-active {
+        border-right-color: $yellow;
+    }
+}
+
