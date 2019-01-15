@@ -7,6 +7,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
 })
 export class HeaderComponent  {
 
+    // Emits an event whenever user clicks on the search bar.
     @Output() search = new EventEmitter<void>();
 
     /**

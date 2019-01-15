@@ -14,6 +14,7 @@ import { ModalService } from './services/modal.service';
 
 // Entry Components ( modals )
 import { WelcomeModalComponent } from './modal/welcome-modal/welcome.modal.component';
+import { SearchModalComponent } from './modal/search-modal/search.modal.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { WelcomeModalComponent } from './modal/welcome-modal/welcome.modal.compo
   ],
   entryComponents: [
       WelcomeModalComponent,
+      SearchModalComponent,
   ],
   bootstrap: [AppComponent]
 })

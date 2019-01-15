@@ -1,17 +1,28 @@
 @import '../styles/variables';
+@import '../styles/variables';
 @import '../styles/mixins';
 @import '../styles/functions';
 
 #primary-content {
+    padding-top: $header-height;
+
     /** 'pushes' footer down to bottom of viewport */
-    min-height: calc(100vh - #{$header-height + $footer-height-mobile});
+    min-height: calc(100vh - #{$footer-height-mobile});
+}
+
+/**
+ * Fix the header to the top of the screen.
+ */
+app-header {
+    position: fixed;
+    width: 100%;
 }
 
 
 @include for-tablet-landscape-up {
     #primary-content {
         /** 'pushes' footer down to bottom of viewport */
-        min-height: calc(100vh - #{$header-height + $footer-height});
+        min-height: calc(100vh - #{$footer-height});
     }
 }
 

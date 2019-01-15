@@ -4,6 +4,7 @@
 header {
     display: flex;
     align-items: center;
+    justify-content: center;
     height: $header-height;
 }
 
@@ -35,6 +36,7 @@ nav {
     border-radius: 22px;
     background-color: $search-bar-bg-color;
     cursor: text;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
 
     img {
         position: absolute;
@@ -46,6 +48,11 @@ nav {
     /** The 'Search' placeholder */
     .faux-search-bar__placeholder {
         opacity: 0.5;
+    }
+
+    /** slightly darken shadow on hover */
+    &:hover {
+        box-shadow: 0 1px 4px rgba(0,0,0,0.6);
     }
 }
 

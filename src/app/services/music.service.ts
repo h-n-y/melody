@@ -1,12 +1,20 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Subject } from 'rxjs';
+import { Observable, Subject, from } from 'rxjs';
+//import { from } from 'rxjs/operators';
 //import axios from 'axios';
+
+enum SearchCategory {
+    Artist,
+    Track,
+    Lyrics
+}
 
 // Interfaces
 import {
     Track,
     Artist,
+    Lyrics,
 } from '../interfaces';
 
 // Musixmatch API constants
@@ -15,6 +23,7 @@ const API_KEY = 'bf81b6270df9af232988d9041cd95074';
 const API_KEY_PARAMETER = 'apikey=' + API_KEY;
 const DEFAULT_PAGE = 1;
 const DEFAULT_PAGE_SIZE = 10;
+const JSONP_CALLBACK_NAME = 'callback';
 
 // Development constants
 const DEVELOPMENT_MODE = true;
@@ -62,6 +71,10 @@ export class MusicService {
     private trackForIdSource = new Subject<Track>();
     private trackLyricsForIdSource = new Subject<Lyrics>(); // lyrics for associated track id
 
+    private searchingArtistsSource = new Subject<boolean>();
+    private searchingTracksSource = new Subject<boolean>();
+    private searchingLyricsSource = new Subject<boolean>();
+
     //
     // Observable streams
     //
@@ -73,29 +86,11 @@ export class MusicService {
     trackForId$ = this.trackForIdSource.asObservable();
     trackLyricsForId$ = this.trackLyricsForIdSource.asObservable();
 
-    /**
-     * Adds all artists in `artists` that have not yet been cached
-     * to the `allArtistsSoFar` array.
-     * @param artists The artists to cache.
-     */
-    private cacheArtists(artists: Artist[]) {
+    // Flag streams used for conditionally displaying search modal loading indicator.
+    searchingArtists$ = this.searchingArtistsSource.asObservable();
+    searchingTracks$ = this.searchingTracksSource.asObservable();
+    searchingLyrics$ = this.searchingLyricsSource.asObservable();
 
-        artists.forEach((artist: Artist) => {
-
-            // First check if artist has already been added.
-            const artistId = artist.artist_id;
-            const index = this.allArtistsSoFar.findIndex((artist: Artist) => {
-                return artist.artist_id === artistId;
-            });
-
-            // Add the artist if necessary.
-            const needToCache = ( index === -1 );
-            if ( needToCache ) {
-                const artistCopy = Object.assign({}, artist);
-                this.allArtistsSoFar.push(artistCopy);
-            }
-        });
-    }
 
     /**
      * Adds all tracks in `tracksToCache` that have not yet been cached to
@@ -134,7 +129,7 @@ export class MusicService {
             const url = urlBase + urlParameters;
 
             // JSONP request
-            this.http.jsonp(url, 'callback').subscribe((res: any) => {
+            this.http.jsonp(url, JSONP_CALLBACK_NAME).subscribe((res: any) => {
                 console.log('hope this works...');
                 console.log(res);
 
@@ -165,7 +160,7 @@ export class MusicService {
             const url = urlBase + urlParameters;
             
             // JSONP request
-            this.http.jsonp(url, 'callback').subscribe((res: any) => {
+            this.http.jsonp(url, JSONP_CALLBACK_NAME).subscribe((res: any) => {
 
                 // cache and add the artists to the stream
                 const artist_list = res.message.body.artist_list;
@@ -195,7 +190,7 @@ export class MusicService {
             'format=jsonp';
         const url = urlBase + urlParameters;
 
-        this.http.jsonp(url, 'callback').subscribe((res: any) => {
+        this.http.jsonp(url, JSONP_CALLBACK_NAME).subscribe((res: any) => {
             console.log('specific artist?');
             console.log(res);
 
@@ -209,8 +204,6 @@ export class MusicService {
         this.jsonpFetchTracksForArtistWithId(artistId, DEFAULT_PAGE, DEFAULT_PAGE_SIZE);
     }
 
-    // NOTE: this method very similar to above...
-    // only difference is url params
     private jsonpFetchTracksForArtistWithId(artistId: number, page: number, pageSize: number) {
         const urlBase = BASE_URL + 'track.search?';
         const urlParameters = API_KEY_PARAMETER + '&' +
@@ -222,9 +215,9 @@ export class MusicService {
             'page_size=' + pageSize;
         const url = urlBase + urlParameters;
 
-        console.log('URL:' url);
+        console.log('URL:', url);
 
-        this.http.jsonp(url, 'callback').subscribe((res: any) => {
+        this.http.jsonp(url, JSONP_CALLBACK_NAME).subscribe((res: any) => {
             console.log('TRACKS FOR ARTIST', artistId);
             console.log(res);
 
@@ -245,7 +238,7 @@ export class MusicService {
             'format=jsonp';
         const url = urlBase + urlParameters; 
 
-        this.http.jsonp(url, 'callback').subscribe((res: any) => {
+        this.http.jsonp(url, JSONP_CALLBACK_NAME).subscribe((res: any) => {
             console.log('TRACK FOR ID', trackId);
             console.log(res);
 
@@ -263,7 +256,7 @@ export class MusicService {
             'format=jsonp';
         const url = urlBase + urlParameters;
 
-        this.http.jsonp(url, 'callback').subscribe((res: any) => {
+        this.http.jsonp(url, JSONP_CALLBACK_NAME).subscribe((res: any) => {
             console.log('LYRICS:');
             console.log(res);
 
@@ -272,8 +265,80 @@ export class MusicService {
             this.trackLyricsForIdSource.next(lyrics);
         });
     }
+    
+    private search(query: string, category: SearchCategory, page: number = DEFAULT_PAGE): Observable<object> {
+
+        // Build the url for the search query:
+        let urlBase,
+            urlParameters = API_KEY_PARAMETER + '&' + 'page=' + page + '&page_size=' + DEFAULT_PAGE_SIZE;
+        switch ( category ) {
+
+            // Artist Search
+            case SearchCategory.Artist:
+                urlBase = BASE_URL + 'artist.search?';
+                urlParameters += '&' +
+                    'q_artist=' + query + '&' +
+                    'format=jsonp';
+                break;
+
+            // Track or Lyrics Search
+            case SearchCategory.Track:
+            case SearchCategory.Lyrics:
+                const queryParameter = ( category === SearchCategory.Track ? 'q_track=' : 'q_lyrics=' );
+
+                urlBase = BASE_URL + 'track.search?';
+                urlParameters += '&' +
+                    queryParameter + query + '&' +
+                    's_artist_rating=desc&' +
+                    's_track_rating=desc&' +
+                    'f_has_lyrics=true&' +
+                    'format=jsonp';
+                break;
+        }
+
+        const url = urlBase + urlParameters;
+        console.log('url: ', url);
+
+        return this.http.jsonp(url, JSONP_CALLBACK_NAME);
+    }
 
     constructor(private http: HttpClient) { }
+
+    /**
+     * Adds all artists in `artists` that have not yet been cached
+     * to the `allArtistsSoFar` array.
+     * @param artists The artists to cache.
+     */
+    cacheArtists(artists: Artist[]) {
+
+        artists.forEach((artist: Artist) => {
+
+            // First check if artist has already been added.
+            const artistId = artist.artist_id;
+            const index = this.allArtistsSoFar.findIndex((artist: Artist) => {
+                return artist.artist_id === artistId;
+            });
+
+            // Add the artist if necessary.
+            const needToCache = ( index === -1 );
+            if ( needToCache ) {
+                const artistCopy = Object.assign({}, artist);
+                this.allArtistsSoFar.push(artistCopy);
+            }
+        });
+    }
+
+    searchArtists(query: string, page: number = DEFAULT_PAGE): Observable<any> {
+        return this.search(query, SearchCategory.Artist, page);
+    }
+
+    searchTracks(query: string, page: number = DEFAULT_PAGE): Observable<any> {
+        return this.search(query, SearchCategory.Track, page);
+    }
+
+    searchLyrics(query: string, page: number = DEFAULT_PAGE): Observable<any> {
+        return this.search(query, SearchCategory.Lyrics, page);
+    }
 
     getCurrentArtistId(): number {
         return this.currentArtistId;
@@ -340,7 +405,7 @@ export class MusicService {
         }
     }
 
-    fetchTracksForArtistWithId(artistId: number) {
+    fetchTracksForArtistWithId(artistId: number, pageNumber: number, pageSize: number) {
 
         /*
         // Check cache first.
@@ -353,13 +418,6 @@ export class MusicService {
 
         if ( USING_JSONP ) {
             this.jsonpFetchTracksForArtistWithId(artistId);
-        }
-    }
-
-    fetchTracksForArtistWithId(artistId: number, page: number, pageSize: number) {
-
-        if ( USING_JSONP ) {
-            this.jsonpFetchTracksForArtistWithId(artistId, page, pageSize);
         }
     }
 
@@ -379,6 +437,15 @@ export class MusicService {
             this.jsonpFetchLyricsForTrackWithId(trackId);
         }
     }
+
+
+    searchAllCategories(query: string) {
+        this.searchArtists(query);
+        this.searchTracks(query);
+        this.searchLyrics(query);
+    }
+
+
 
     /**
      * Checks the status code of a musixmatch api response.
@@ -420,9 +487,5 @@ export class MusicService {
         console.warn('musixmatch api error! Status code ' + statusCode);
         return false;
     }
-}
 
-function callback(res) {
-    console.log('NO WAY*********');
-    console.log(res);
 }

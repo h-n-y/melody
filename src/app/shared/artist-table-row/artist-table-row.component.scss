@@ -1,6 +1,12 @@
 @import '../../../styles/variables';
 @import '../../../styles/mixins';
 
+.artist-table-row {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
 .artist-avatar-placeholder {
     border-radius: 25px;
     overflow: hidden;
@@ -13,6 +19,7 @@
 .primary-content {
     /** pushes the twitter link to the far right */
     flex-grow: 2;
+    overflow: hidden;
 }
 
 /** The link to the artist's Twitter profile. */
@@ -31,4 +38,15 @@
 .artist-name {
     color: $text-color-dark;
     font-weight: 500;
+
+    @include truncate-ellipsis;
+}
+
+/**
+ * prevent the artist avatar and twitter link
+ * from shrinking due to a long artist name:
+ */
+.artist-avatar-placeholder,
+.twitter-link {
+    flex-shrink: 0;
 }

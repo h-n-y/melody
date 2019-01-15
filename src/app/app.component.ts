@@ -25,7 +25,8 @@ export class AppComponent {
         console.log('app component - search');
         this.modalService.displaySearchModal();
 
-        this.modalService.displayWelcomeModal();
+        //this.modalService.displayWelcomeModal();
+
     }
 
     onModalOverlayClick() {

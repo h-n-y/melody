@@ -1,3 +1,10 @@
+/** class added to body when a modal is visible to
+ * prevent page scrolling
+ */
+body.no-scroll {
+    overflow: hidden;
+}
+
 a {
     color: $link-color;
 }

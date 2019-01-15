@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
 export class ModalComponent {
 
     private showModalAnimated() {
-        document.getElementsByClass
+        //document.getElementsByClass
     }
 
     private hideModalAnimated() {

@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { DOMService } from './dom.service';
+import { Subject } from 'rxjs';
 
 // Modal Components
 import { WelcomeModalComponent } from '../modal/welcome-modal/welcome.modal.component';
+import { SearchModalComponent } from '../modal/search-modal/search.modal.component';
 
 /**
  * A service for presenting and dismissing modals.
@@ -15,6 +17,7 @@ export class ModalService {
 
     private readonly modalElementId = 'modal-container';
     private readonly overlayElementId = 'modal-overlay';
+    private readonly noPageScrollClass = 'no-scroll';
 
     private _welcomeModalDisplayed = false;
 
@@ -23,6 +26,24 @@ export class ModalService {
         this.domService.appendComponentTo(this.modalElementId, component, componentConfig);
         document.getElementById(this.modalElementId).className = 'show';
         document.getElementById(this.overlayElementId).className = 'show';
+    }
+
+    private announceModalDismissalSource = new Subject<void>();
+
+    announceModalDismissal$ = this.announceModalDismissalSource.asObservable();
+
+    /**
+     * disables page scrolling
+     */
+    private preventPageScrolling() {
+        document.body.classList.add(this.noPageScrollClass);
+    }
+
+    /**
+     * enables page scrolling
+     */
+    private resumePageScrolling() {
+        document.body.classList.remove(this.noPageScrollClass);
     }
 
     constructor(private domService: DOMService) { }
@@ -39,6 +60,8 @@ export class ModalService {
      * Displays the Welcome modal.
      */
     displayWelcomeModal() {
+        this.preventPageScrolling();
+
         console.log('displaying welcome modal...');
         const inputs = {
             dismiss: () => this.destroy()
@@ -51,12 +74,21 @@ export class ModalService {
      * Displays the music Search modal.
      */
     displaySearchModal() {
+        this.preventPageScrolling();
+
         console.log('displaying search modal...');
+        const inputs = {
+            dismiss: () => this.destroy()
+        };
+        this.init(SearchModalComponent, inputs, {});
     }
 
     destroy() {
         this.domService.removeComponent();
         document.getElementById(this.modalElementId).className = 'hidden';
         document.getElementById(this.overlayElementId).className = 'hidden';
+        this.resumePageScrolling();
+
+        this.announceModalDismissalSource.next();
     }
 }

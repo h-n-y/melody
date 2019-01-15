@@ -6,12 +6,10 @@
                 alt="artist avatar placeholder" /> 
        </div>
        <section class="primary-content">
-           <h4 class="artist-name">
+           <h4 class="artist-name"
+               [title]="artist.artist_name">
                {{ artist.artist_name }} 
            </h4> 
-           <p>
-                2 albums - 12 tracks 
-           </p>
        </section>
        <a *ngIf="artist.artist_twitter_url"
            [href]="artist.artist_twitter_url"

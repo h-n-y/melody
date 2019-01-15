@@ -1,3 +1,7 @@
+/**
+ * Interfaces
+ */
+
 export interface Track {
     album_coverart_100x100: string;
     album_id: number;

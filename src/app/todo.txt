@@ -1,3 +1,31 @@
 // TODO
 
 - check status codes for all API responses
+
+- DEFAULT_PAGE constant should be in a single file
+- also DEFAULT_PAGE_SIZE
+--> currently in music.service.ts and search-results-page.component.ts
+
+- check sort order for search results page requests
+
+- need to anticipate a "no results" situation
+
+- make git commits
+
+- document code
+
+- Search Results Page -> num results values
+- Search Results Page tab click -> scroll to top
+
+- Musixmatch links
+
+- make sure lyrics pixel image is being used
+
+- search on Enter?
+
+- add additional right-hand padding to search modal search bar --> pushes
+  browser cancel button to the left, which is desired
+
+- need to push footer down for short content
+
+- remove localstorage functionality

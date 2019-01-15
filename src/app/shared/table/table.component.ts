@@ -43,11 +43,22 @@ export class TableComponent  {
     @Output() seeMore = new EventEmitter<void>();
     @Output() loadMore = new EventEmitter<void>();
 
+    @Output() trackSelected  = new EventEmitter<Track>();
+    @Output() artistSelected = new EventEmitter<Artist>();
+
     onSeeMoreBtnClick() {
         this.seeMore.emit();
     }
 
     onLoadMoreBtnClick() {
         this.loadMore.emit();
+    }
+
+    onTrackSelected(track: Track) {
+        this.trackSelected.emit(track);
+    }
+
+    onArtistSelected(artist: Artist) {
+        this.artistSelected.emit(artist);
     }
 }

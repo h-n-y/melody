@@ -13,7 +13,8 @@
 
         <!-- TRACK TABLE -->
         <ul *ngSwitchCase="TableType.Track">
-            <li *ngFor="let track of items; let i = index;">
+            <li *ngFor="let track of items; let i = index;"
+                (click)="onTrackSelected(track)">
                 <app-track-table-row
                     [track]="track"
                     [artistKnown]="artistKnown"></app-track-table-row> 
@@ -22,7 +23,8 @@
 
         <!-- ARTIST TABLE -->
         <ul *ngSwitchCase="TableType.Artist">
-            <li *ngFor="let artist of items; let i = index;">
+            <li *ngFor="let artist of items; let i = index;"
+                (click)="onArtistSelected(artist)">
                 <app-artist-table-row
                     [artist]="artist"></app-artist-table-row> 
             </li> 
