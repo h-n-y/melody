@@ -9,18 +9,25 @@ import {
 
 // Services
 import { MusicService } from '../../services/music.service';
+import { ModalService } from '../../services/modal.service';
 
+/**
+ * Artist Details Page
+ *
+ * Displays the name and tracks of a particular artist.
+ *
+ */
 @Component({
     templateUrl: './artist-details-page.component.html',
     styleUrls: [ './artist-details-page.component.scss' ]
 })
 export class ArtistDetailsPageComponent implements OnInit  {
 
-    private paramsSub: any;
+    private paramsSub: any; // route params subscription reference
 
-    private artistId: number;
+    private artistId: number;   // the id of the displayed artist
 
-    artist: Artist;
+    artist: Artist; // the displayed artist
 
     /**
      * Requests the MusicService fetch the artist with the associated id.
@@ -50,10 +57,23 @@ export class ArtistDetailsPageComponent implements OnInit  {
         });
     }
 
+
+    /**
+     * Scrolls the page to the top whenever a presented modal is dismissed.
+     * Makes for a better UX.
+     */
+    private listenForModalDismissal() {
+        this.modalService.announceModalDismissal$.subscribe(() => {
+            document.body.scrollTop = 0;
+        });
+    }
+
     constructor(private musicService: MusicService,
+                private modalService: ModalService,
                 private router: Router,
                 private route: ActivatedRoute) { }
 
+    // TODO: remove
     onArtistNameClick() {
         this.router.navigate(['artist/' + this.artistId]);
     }
@@ -63,14 +83,16 @@ export class ArtistDetailsPageComponent implements OnInit  {
         this.artist = JSON.parse(window.localStorage.getItem('artist')) || [];
 
 
-        //this.listenForArtist();
+        this.listenForArtist();
+
+        this.listenForModalDismissal();
         
         // Listen for the artistId parameter and fetch the artist
         // with that id.
         this.paramsSub = this.route.params.subscribe((params) => {
             this.artistId = +params['artistId'];
             this.musicService.setCurrentArtistId(this.artistId);
-            //this.fetchArtistForId(this.artistId);
+            this.fetchArtistForId(this.artistId);
         });
 
     }

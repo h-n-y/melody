@@ -9,6 +9,12 @@
             [items]="tracks"
             [artistKnown]="true"
             [seeMoreBtnVisible]="true"
-            (seeMore)="onSeeMoreTracksBtnClick()"></app-table>
+            (seeMore)="onSeeMoreTracksBtnClick()"
+            (trackSelected)="onTrackSelected($event)"></app-table>
+
+        <p *ngIf="noTracksAvailable"
+            class="no-results-label">
+            No Tracks Available 
+        </p>
     </div>
 </div>

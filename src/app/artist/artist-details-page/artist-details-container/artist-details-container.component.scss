@@ -1,2 +1,11 @@
 .artist-details-container {
 }
+
+/**
+ * The label that appears if no results are available.
+ */
+.no-results-label {
+    text-align: center;
+    color: #ccc;
+    font-size: 22px;
+}

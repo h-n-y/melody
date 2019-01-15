@@ -1,13 +1,18 @@
 @import '../../../styles/variables';
+@import '../../../styles/mixins';
 
 #artist-details-page {
     padding-top: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .primary-content {
     padding-left: 12px;
     padding-right: 12px;
     padding-bottom: 48px;
+    width: 100%;
 }
 
 .artist-image {
@@ -33,9 +38,10 @@
         margin-bottom: 6px;
         cursor: pointer;
     }
+}
 
-    .artist-albums-and-tracks {
-        color: $text-color;
-        font-weight: 300;
+@include for-tablet-landscape-up {
+    .primary-content {
+        width: 50%;
     }
 }
