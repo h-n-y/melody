@@ -31,6 +31,18 @@ h4 {
     margin-top: 64px;
 }
 
+.tracks,
+.artists {
+    width: 100%;
+}
+
+@include for-tablet-portrait-up {
+    .tracks,
+    .artists {
+        width: 80%;
+    }
+}
+
 @include for-tablet-landscape-up {
 
     #landing-page {
