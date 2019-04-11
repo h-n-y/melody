@@ -71,18 +71,26 @@ export class ArtistTracksContainerComponent implements OnInit {
         ++this.pageNumber;
 
         // Update the track availability flag.
-        const numAvailableTracksSet = this.numTracksAvailable;
-        if ( numAvailableTracksSet ) {
+        const numAvailableTracksFlagHasBeenSet = this.numTracksAvailable;
+        if ( numAvailableTracksFlagHasBeenSet ) {
             this.moreTracksAvailable = ( this.pageNumber * this.pageSize <= this.numTracksAvailable )
         }
     }
 
-    constructor(private musicService: MusicService) { }
+    constructor(private router: Router,
+                private musicService: MusicService) { }
 
     onLoadMoreBtnClick() {
-        console.log('load more tracks');
+        if ( this.moreTracksAvailable ) {
+            this.fetchTracks();
+        } else {
+            console.log('--- NO MORE TRACKS AVAILABLE ---');
+        }
+    }
 
-        this.fetchTracks();
+    onTrackSelected(track) {
+        const url = '/track/' + track.track_id;
+        this.router.navigate([url]);
     }
 
     ngOnInit() {

@@ -31,3 +31,12 @@
 - remove localstorage functionality
 
 - remove JSONP-related conditional searches --> just use jsonp all the time
+
+- twitter link should consume click event on artist table row
+
+- consider searching tracks + lyrics simultaneously -> could return better
+  search results. Example: Searching 'rooster alice in chains' won't return
+that song if searching query in lyrics and tracks *separately*. Look at the
+musixmatch api for potential options.
+
+- remove pointer events on note icon in track details page to allow scrolling

@@ -1,8 +1,29 @@
 @import '../../../styles/mixins';
 @import '../../../styles/variables';
 
-.track-table-row {
+/**
+ *
+ * experimenting with different colors on hover...
+ *
+ *
+.track-table-row:hover {
+    background-color: $navy-blue;
+
+    .track-name,
+    .track-artist,
+    .track-album {
+        color: white;
+    }
+
+    .track-artist {
+        opacity: 0.8;
+    }
+
+    .track-album {
+        opacity: 0.6;
+    }
 }
+*/
 
 /** prevents track icon from shrinking in case of long track name */
 .icon-placeholder {

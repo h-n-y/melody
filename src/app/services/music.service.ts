@@ -200,11 +200,13 @@ export class MusicService {
         });
     }
 
+    /*
     private jsonpFetchTracksForArtistWithId(artistId: number) {
         this.jsonpFetchTracksForArtistWithId(artistId, DEFAULT_PAGE, DEFAULT_PAGE_SIZE);
     }
+   */
 
-    private jsonpFetchTracksForArtistWithId(artistId: number, page: number, pageSize: number) {
+    private jsonpFetchTracksForArtistWithId(artistId: number, page: number = DEFAULT_PAGE, pageSize: number = DEFAULT_PAGE_SIZE) { 
         const urlBase = BASE_URL + 'track.search?';
         const urlParameters = API_KEY_PARAMETER + '&' +
             'f_artist_id=' + artistId + '&' +
@@ -417,7 +419,7 @@ export class MusicService {
        */
 
         if ( USING_JSONP ) {
-            this.jsonpFetchTracksForArtistWithId(artistId);
+            this.jsonpFetchTracksForArtistWithId(artistId, pageNumber, pageSize);
         }
     }
 

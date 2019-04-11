@@ -10,6 +10,7 @@
             [artistKnown]="true"
             [loadMoreBtnVisible]="moreTracksAvailable"
             [loading]="loadingTracks"
+            (trackSelected)="onTrackSelected($event)"
             (loadMore)="onLoadMoreBtnClick()"
             ></app-table>
     </div>
