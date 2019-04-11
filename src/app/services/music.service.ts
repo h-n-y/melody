@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject, from } from 'rxjs';
-//import { from } from 'rxjs/operators';
-//import axios from 'axios';
 
 enum SearchCategory {
     Artist,
@@ -24,10 +22,6 @@ const API_KEY_PARAMETER = 'apikey=' + API_KEY;
 const DEFAULT_PAGE = 1;
 const DEFAULT_PAGE_SIZE = 10;
 const JSONP_CALLBACK_NAME = 'callback';
-
-// Development constants
-const DEVELOPMENT_MODE = true;
-const USING_JSONP = DEVELOPMENT_MODE;
 
 /**
  * A service for fetching music data from the musixmatch API.
@@ -130,8 +124,6 @@ export class MusicService {
 
             // JSONP request
             this.http.jsonp(url, JSONP_CALLBACK_NAME).subscribe((res: any) => {
-                console.log('hope this works...');
-                console.log(res);
 
                 // cache and add the tracks to the stream
                 const track_list = res.message.body.track_list;
@@ -191,20 +183,12 @@ export class MusicService {
         const url = urlBase + urlParameters;
 
         this.http.jsonp(url, JSONP_CALLBACK_NAME).subscribe((res: any) => {
-            console.log('specific artist?');
-            console.log(res);
 
             const artist: Artist = res.message.body.artist;
             this.cacheArtists([artist]);
             this.artistForIdSource.next(artist);
         });
     }
-
-    /*
-    private jsonpFetchTracksForArtistWithId(artistId: number) {
-        this.jsonpFetchTracksForArtistWithId(artistId, DEFAULT_PAGE, DEFAULT_PAGE_SIZE);
-    }
-   */
 
     private jsonpFetchTracksForArtistWithId(artistId: number, page: number = DEFAULT_PAGE, pageSize: number = DEFAULT_PAGE_SIZE) { 
         const urlBase = BASE_URL + 'track.search?';
@@ -217,11 +201,8 @@ export class MusicService {
             'page_size=' + pageSize;
         const url = urlBase + urlParameters;
 
-        console.log('URL:', url);
 
         this.http.jsonp(url, JSONP_CALLBACK_NAME).subscribe((res: any) => {
-            console.log('TRACKS FOR ARTIST', artistId);
-            console.log(res);
 
             const tracks: Track[] = res.message.body.track_list.map((item) => item.track);
             this.cacheTracksForArtist(artistId, tracks);
@@ -241,9 +222,6 @@ export class MusicService {
         const url = urlBase + urlParameters; 
 
         this.http.jsonp(url, JSONP_CALLBACK_NAME).subscribe((res: any) => {
-            console.log('TRACK FOR ID', trackId);
-            console.log(res);
-
             const track: Track = res.message.body.track;
             this.trackForIdSource.next(track)
 
@@ -259,9 +237,6 @@ export class MusicService {
         const url = urlBase + urlParameters;
 
         this.http.jsonp(url, JSONP_CALLBACK_NAME).subscribe((res: any) => {
-            console.log('LYRICS:');
-            console.log(res);
-
             const lyrics: Lyrics = res.message.body.lyrics;
             // TODO: cache lyrics
             this.trackLyricsForIdSource.next(lyrics);
@@ -299,7 +274,6 @@ export class MusicService {
         }
 
         const url = urlBase + urlParameters;
-        console.log('url: ', url);
 
         return this.http.jsonp(url, JSONP_CALLBACK_NAME);
     }
@@ -361,36 +335,11 @@ export class MusicService {
     }
 
     fetchPopularTracks() {
-        if ( USING_JSONP ) {
-            this.jsonpFetchPopularTracks();
-            return;
-        }
-
-        //const urlBase = BASE_URL + 'track.search?';
-        const urlBase = BASE_URL + 'track.search?';
-        const urlParameters = API_KEY_PARAMETER + '&' +
-            'f_has_lyrics=true&' +
-            's_track_rating=desc&' +
-            'page_size=15&' +
-            'format=json';
-        const url = urlBase + urlParameters;
-
-        //return this.getDataAtUrl(url);
+        this.jsonpFetchPopularTracks();
     }
 
     fetchPopularArtists() {
-        if ( USING_JSONP ) {
-            this.jsonpFetchPopularArtists();
-            return;
-        }
-        const urlBase = BASE_URL + 'track.search?';
-        const urlParameters = API_KEY_PARAMETER + '&' +
-            'f_has_lyrics=true&' +
-            's_artist_rating=desc&' +
-            'format=json';
-        const url = urlBase + urlParameters;
-
-        //return this.getDataAtUrl(url);
+        this.jsonpFetchPopularArtists();
     }
 
 
@@ -398,13 +347,12 @@ export class MusicService {
         // First, check if artist has previously been fetched.
         let artist: Artist = this.allArtistsSoFar.find((artist: Artist) => artist.artist_id === artistId);
         if ( artist ) {
-            
+            /* TODO */ 
+            console.log('&&& cached artist &&&');
         }
 
         // Artist not cached. Make the API call.
-        if ( USING_JSONP ) {
-            this.jsonpFetchArtistForId(artistId);
-        }
+        this.jsonpFetchArtistForId(artistId);
     }
 
     fetchTracksForArtistWithId(artistId: number, pageNumber: number, pageSize: number) {
@@ -418,16 +366,12 @@ export class MusicService {
         }
        */
 
-        if ( USING_JSONP ) {
-            this.jsonpFetchTracksForArtistWithId(artistId, pageNumber, pageSize);
-        }
+        this.jsonpFetchTracksForArtistWithId(artistId, pageNumber, pageSize);
     }
 
 
     fetchTrackWithId(trackId: number) {
-        if ( USING_JSONP ) {
-            this.jsonpFetchTrackWithId(trackId);
-        }
+        this.jsonpFetchTrackWithId(trackId);
     }
 
 
@@ -435,9 +379,7 @@ export class MusicService {
         // TODO:
         // First check if already cached.
 
-        if ( USING_JSONP ) {
-            this.jsonpFetchLyricsForTrackWithId(trackId);
-        }
+        this.jsonpFetchLyricsForTrackWithId(trackId);
     }
 
 
@@ -489,5 +431,4 @@ export class MusicService {
         console.warn('musixmatch api error! Status code ' + statusCode);
         return false;
     }
-
 }
