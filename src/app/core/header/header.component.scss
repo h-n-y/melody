@@ -8,6 +8,10 @@ header {
     height: $header-height;
 }
 
+#home-page-link-wrapper {
+    display: none;
+}
+
 .search-bar-container {
     width: 100%;
     padding: 12px;
@@ -56,18 +60,43 @@ nav {
     }
 }
 
+@include for-tablet-portrait-up {
+
+    header {
+        justify-content: flex-start;
+    }
+
+    #home-page-link-wrapper {
+        padding-left: 32px;
+        display: block;
+        width: 25%;
+
+        a {
+            color: $navy-blue;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .search-bar-container {
+        width: 50%;
+    }
+}
+
 /**
  * TABLET LANDSCAPE AND LARGER
  */
 @include for-tablet-landscape-up {
+
 
     /** show the primary navigation */
     nav {
         display: flex;
     }
 
-    nav,
-    .search-bar-container {
+    nav, {
         width: 33.333%;
     }
 }
