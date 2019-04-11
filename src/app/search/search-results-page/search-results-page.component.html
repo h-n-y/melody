@@ -4,9 +4,9 @@
     <div class="search-results-tabs">
         <app-search-results-tabs
             [category]="searchCategory"
-            [numArtists]="searchResults.artists.list.length"
-            [numTracks]="searchResults.tracks.list.length"
-            [numLyrics]="searchResults.lyrics.list.length"
+            [numArtists]="searchResults.artists.numAvailable"
+            [numTracks]="searchResults.tracks.numAvailable"
+            [numLyrics]="searchResults.lyrics.numAvailable"
             (allSelected)="onAllTabSelected()"
             (artistsSelected)="onArtistTabSelected()"
             (tracksSelected)="onTrackTabSelected()"

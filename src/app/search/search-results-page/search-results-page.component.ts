@@ -41,16 +41,19 @@ export class SearchResultsPageComponent implements OnInit  {
         artists: {
             apiPageNum: 1,
             apiMaxPageNum: -1,
+            numAvailable: 0,
             list: []
         },
         tracks: {
             apiPageNum: 1,
             apiMaxPageNum: -1,
+            numAvailable: 0,
             list: []
         },
         lyrics: {
             apiPageNum: 1,
             apiMaxPageNum: -1,
+            numAvailable: 0,
             list: []
         },
     };
@@ -140,6 +143,20 @@ export class SearchResultsPageComponent implements OnInit  {
     }
 
     /**
+     * Sets the number of results the API can return for the given search category.
+     * @param {string} category - The search category. Should be 'artists', 'tracks', or 'lyrics'
+     * @param {number} numAvailable - The number of available results for the category.
+     */
+    private setNumAvailableResultsForSearchCategory(category: string, numAvailable: number) {
+
+        const searchResults = this.searchResults;
+        const needToSet = ( searchResults[category].numAvailable === 0 );
+        if ( needToSet ) {
+            searchResults[category].numAvailable = numAvailable;
+        }
+    }
+
+    /**
      * Subscribes to updates on search results for artists.
      * @param query The search string to match against.
      */
@@ -147,19 +164,29 @@ export class SearchResultsPageComponent implements OnInit  {
         console.log('page is ' + page);
         this.musicService.searchArtists(query, page).subscribe(response => {
             console.log('artist results');
+            console.log(response);
+            console.log(`AVAILABLE: ${response.message.header.available}`);
+
+
+            //
+            // Set number of available artists
+            //
+            const numResults = response.message.header.available;
+            this.setNumAvailableResultsForSearchCategory('artists', numResults);
 
             const newArtists = response.message.body.artist_list.map(obj => obj.artist);
             console.log(newArtists);
             window.localStorage.setItem('searchPageArtists', JSON.stringify(newArtists));
 
             // concatenate artists to existing list
-            const artistList = this.searchResults.artists.list;
-            this.searchResults.artists.list = artistList.concat(newArtists);
+            const searchResults = this.searchResults;
+            const artistList = searchResults.artists.list;
+            searchResults.artists.list = artistList.concat(newArtists);
 
             // Set max page count for this request
-            const needToSetMaxPageSize = this.searchResults.artists.apiMaxPageNum === -1;
+            const needToSetMaxPageSize = searchResults.artists.apiMaxPageNum === -1;
             if ( needToSetMaxPageSize ) {
-                this.searchResults.artists.apiMaxPageNum = this.numAvailablePagesForResponse(response);
+                searchResults.artists.apiMaxPageNum = this.numAvailablePagesForResponse(response);
             }
 
         });
@@ -173,6 +200,12 @@ export class SearchResultsPageComponent implements OnInit  {
         this.musicService.searchTracks(query, page).subscribe(response => {
             console.log('tracks results');
             console.log(response);
+
+            //
+            // Set number of available tracks
+            //
+            const numResults = response.message.header.available;
+            this.setNumAvailableResultsForSearchCategory('tracks', numResults);
 
             const newTracks = response.message.body.track_list.map(obj => obj.track);
             window.localStorage.setItem('searchPageTracks', JSON.stringify(newTracks));
@@ -197,6 +230,12 @@ export class SearchResultsPageComponent implements OnInit  {
         this.musicService.searchLyrics(query, page).subscribe(response => {
             console.log('lyrics results');
             console.log(response);
+
+            //
+            // Set number of available lyrics
+            //
+            const numResults = response.message.header.available;
+            this.setNumAvailableResultsForSearchCategory('lyrics', numResults);
 
             const newTrackLyrics = response.message.body.track_list.map(obj => obj.track);
             window.localStorage.setItem('searchPageLyrics', JSON.stringify(newTrackLyrics));
@@ -246,8 +285,9 @@ export class SearchResultsPageComponent implements OnInit  {
      * @param response - The api response whose max page count we want.
      */
     private numAvailablePagesForResponse(response: any): number {
-        const size = response.message.header.available;
-        return ( size / DEFAULT_PAGE_SIZE ) + ( size % DEFAULT_PAGE_SIZE )
+        const numAvailable = response.message.header.available;
+        return Math.floor( numAvailable / DEFAULT_PAGE_SIZE ) +
+            ( numAvailable % DEFAULT_PAGE_SIZE ? 1 : 0 );
     }
 
     constructor(private route: ActivatedRoute,
