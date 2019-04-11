@@ -95,7 +95,7 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
      * @returns `true` iff any search results have been received.
      */
     get resultsExist(): boolean {
-        return this.artists.length || this.tracks.length || this.lyrics.length;
+        return !!(this.artists.length || this.tracks.length || this.lyrics.length);
     }
 
     /**
@@ -103,7 +103,7 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
      * @param query - The query to match artists against.
      * @returns An Observable that can be subscribed to for search results.
      */
-    private listenForArtistSearchResults(query: string): Observable<any> {
+    private listenForArtistSearchResults(query: string): Observable<any> | any[] {
         if ( query ) {
             return this.musicService.searchArtists(query);
         }
@@ -116,7 +116,7 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
      * @param query - The query to match tracks against.
      * @returns An Observable that can be subscribed to for search results.
      */
-    private listenForTrackSearchResults(query: string): Observable<any> {
+    private listenForTrackSearchResults(query: string): Observable<any> | any[] {
         if ( query ) {
             return this.musicService.searchTracks(query);
         }
@@ -129,7 +129,7 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
      * @param query - The query to match lyrics against.
      * @returns An Observable that can be subscribed to for search results.
      */
-    private listenForLyricsSearchResults(query: string): Observable<any> {
+    private listenForLyricsSearchResults(query: string): Observable<any> | any[] {
         if ( query ) {
             return this.musicService.searchLyrics(query);
         }

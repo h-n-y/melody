@@ -355,7 +355,7 @@ export class MusicService {
         this.jsonpFetchArtistForId(artistId);
     }
 
-    fetchTracksForArtistWithId(artistId: number, pageNumber: number, pageSize: number) {
+    fetchTracksForArtistWithId(artistId: number, pageNumber: number = DEFAULT_PAGE, pageSize: number = DEFAULT_PAGE_SIZE) {
 
         /*
         // Check cache first.
