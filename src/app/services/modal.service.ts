@@ -62,7 +62,6 @@ export class ModalService {
     displayWelcomeModal() {
         this.preventPageScrolling();
 
-        console.log('displaying welcome modal...');
         const inputs = {
             dismiss: () => this.destroy()
         };
@@ -76,7 +75,6 @@ export class ModalService {
     displaySearchModal() {
         this.preventPageScrolling();
 
-        console.log('displaying search modal...');
         const inputs = {
             dismiss: () => this.destroy()
         };

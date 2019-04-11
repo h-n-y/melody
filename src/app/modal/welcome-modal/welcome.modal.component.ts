@@ -20,7 +20,6 @@ export class WelcomeModalComponent  {
      * via CSS animation.
      */
     private showModalAnimated() {
-        console.log('ANIMATE MODAL');
         const modal = document.getElementById('welcome-modal');
 
         modal.classList.add('visible');

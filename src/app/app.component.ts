@@ -34,7 +34,6 @@ export class AppComponent implements OnInit {
      * Displays the music search modal.
      */
     onSearchBarClick() {
-        console.log('app component - search');
         this.modalService.displaySearchModal();
 
         //this.modalService.displayWelcomeModal();
@@ -42,7 +41,6 @@ export class AppComponent implements OnInit {
     }
 
     onModalOverlayClick() {
-        console.log('click?');
         this.dismissModal();
     }
 

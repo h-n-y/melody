@@ -122,9 +122,6 @@ export class SearchResultsPageComponent implements OnInit  {
      */
     private listenForQueryParameters() {
         this.route.queryParams.subscribe(params => {
-            console.log('QUERY PARAMETERS');
-            console.log(params);
-
             this.searchCategory = params.category;
 
 
@@ -161,13 +158,7 @@ export class SearchResultsPageComponent implements OnInit  {
      * @param query The search string to match against.
      */
     private listenForArtistSearchResults(query: string, page: number = DEFAULT_PAGE) {
-        console.log('page is ' + page);
         this.musicService.searchArtists(query, page).subscribe(response => {
-            console.log('artist results');
-            console.log(response);
-            console.log(`AVAILABLE: ${response.message.header.available}`);
-
-
             //
             // Set number of available artists
             //
@@ -175,7 +166,6 @@ export class SearchResultsPageComponent implements OnInit  {
             this.setNumAvailableResultsForSearchCategory('artists', numResults);
 
             const newArtists = response.message.body.artist_list.map(obj => obj.artist);
-            console.log(newArtists);
             window.localStorage.setItem('searchPageArtists', JSON.stringify(newArtists));
 
             // concatenate artists to existing list
@@ -198,9 +188,6 @@ export class SearchResultsPageComponent implements OnInit  {
      */
     private listenForTrackSearchResults(query: string, page: number = DEFAULT_PAGE) {
         this.musicService.searchTracks(query, page).subscribe(response => {
-            console.log('tracks results');
-            console.log(response);
-
             //
             // Set number of available tracks
             //
@@ -228,9 +215,6 @@ export class SearchResultsPageComponent implements OnInit  {
      */
     private listenForLyricsSearchResults(query: string, page: number = DEFAULT_PAGE) {
         this.musicService.searchLyrics(query, page).subscribe(response => {
-            console.log('lyrics results');
-            console.log(response);
-
             //
             // Set number of available lyrics
             //
@@ -329,8 +313,6 @@ export class SearchResultsPageComponent implements OnInit  {
      * Called when user clicks the 'All' tab.
      */
     onAllTabSelected() {
-        console.log('All Tab');
-        //this.searchCategory = SearchCategory.All;
         this.router.navigate(['/search'], {
             queryParams: {
                 queryString: this.query,
@@ -344,8 +326,6 @@ export class SearchResultsPageComponent implements OnInit  {
      * Called when user clicks the 'Artists' tab.
      */
     onArtistTabSelected() {
-        console.log('Artist Tab');
-        //this.searchCategory = SearchCategory.Artists;
         this.router.navigate(['/search'], {
             queryParams: {
                 queryString: this.query,
@@ -359,8 +339,6 @@ export class SearchResultsPageComponent implements OnInit  {
      * Called when user clicks the 'Artists' tab.
      */
     onTrackTabSelected() {
-        console.log('Track Tab');
-        //this.searchCategory = SearchCategory.Tracks;
         this.router.navigate(['/search'], {
             queryParams: {
                 queryString: this.query,
@@ -374,8 +352,6 @@ export class SearchResultsPageComponent implements OnInit  {
      * Called when user clicks the 'Lyrics' tab.
      */
     onLyricsTabSelected() {
-        console.log('Lyrics Tab');
-        //this.searchCategory = SearchCategory.Lyrics;
         this.router.navigate(['/search'], {
             queryParams: {
                 queryString: this.query,
@@ -390,8 +366,6 @@ export class SearchResultsPageComponent implements OnInit  {
      * a results table.
      */
     onLoadMoreBtnClick() {
-        console.log('load more');
-        console.log(this.searchCategory);
         const query = this.query;
 
         let page;
@@ -416,8 +390,6 @@ export class SearchResultsPageComponent implements OnInit  {
                 this.listenForLyricsSearchResults(query, page);
                 break;
         }
-
-        console.log('page = ', page);
     }
 
     //

@@ -66,15 +66,6 @@ export class LandingPageComponent implements OnInit, AfterViewInit  {
     private listenForPopularArtists() {
         this.musicService.popularArtists$.subscribe((res) => {
             this.searchingArtists = false;
-            console.log('**************');
-            console.log('Artists:');
-            console.log(res);
-            //const list = res.message.body.artist_list;
-            const artist_list = res;
-            artist_list.forEach((artist) => {
-                console.log(artist.artist_rating);
-            });
-
             this.popularArtists = res;
         });
     }
@@ -87,9 +78,6 @@ export class LandingPageComponent implements OnInit, AfterViewInit  {
         this.musicService.popularTracks$.subscribe((res) => {
             this.searchingTracks = false;
             this.popularTracks = res;
-
-            console.log('tracks!');
-            console.log(res);
         });
     }
 
@@ -140,8 +128,6 @@ export class LandingPageComponent implements OnInit, AfterViewInit  {
      * @param artist - The selected artist.
      */
     onArtistSelected(artist: Artist) {
-        console.log(artist);
-        
         const url = '/artist/' + artist.artist_id;
         this.router.navigate([url]);
     }
@@ -152,8 +138,6 @@ export class LandingPageComponent implements OnInit, AfterViewInit  {
      * @param track - The selected track.
      */
     onTrackSelected(track: Track) {
-        console.log(track);
-
         const url = '/track/' + track.track_id;
         this.router.navigate([url]);
     }
@@ -172,10 +156,6 @@ export class LandingPageComponent implements OnInit, AfterViewInit  {
             this.fetchPopularTracks();
             this.fetchPopularArtists();
         }
-
-        console.log('active tab:');
-        console.log(this.activeTab);
-        console.log(TabCategory);
     }
 
     ngAfterViewInit() {

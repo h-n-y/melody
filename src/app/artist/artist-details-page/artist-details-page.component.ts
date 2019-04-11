@@ -46,8 +46,6 @@ export class ArtistDetailsPageComponent implements OnInit  {
             // make sure the artist id matches the query parameter id.
             const artistMatchesId = ( artist.artist_id === this.artistId );
             if ( artistMatchesId ) {
-                console.log('SUCCESS ( artist )');
-                console.log(artist);
                 this.artist = artist;
 
 

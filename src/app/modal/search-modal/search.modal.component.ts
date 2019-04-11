@@ -38,7 +38,6 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
     // Adds a box shadow to the search bar if the search results are scrolled
     // any amount down and removes otherwise.
     private handleScroll = ((e) => {
-        console.log(e.target.scrollTop); 
         const scroll = e.target.scrollTop;
         this.searchBarShadowVisible = ( scroll > 0 );
 
@@ -154,8 +153,6 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
 
         // reset the search flags for each new query
         searchQueryObservable.pipe(debounceTime(500)).subscribe(query => {
-            console.log(query);
-
             this.query = query.trim();
 
             if ( this.query ) {
@@ -178,20 +175,14 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
         searchQueryObservable.pipe(debounceTime(500))
             .pipe(switchMap(query => this.listenForArtistSearchResults(query.trim())))
             .subscribe(response => {
-                console.log('--- ARTIST ---');
-                console.log(response);
-
                 // get artists and save a copy
                 const artists = response.message.body.artist_list.map(obj => obj.artist);
                 this.artists = artists.map(artist => Object.assign({}, artist));
                 this.searching.artists = false;
-                console.log('=');
-                console.log(this.artists);
-
                 // save artists for future queries
                 this.musicService.cacheArtists(this.artists)
 
-                window.localStorage.setItem('searchArtists', JSON.stringify(this.artists));
+                //window.localStorage.setItem('searchArtists', JSON.stringify(this.artists));
             });
 
 
@@ -199,32 +190,23 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
         searchQueryObservable.pipe(debounceTime(500))
             .pipe(switchMap(query => this.listenForTrackSearchResults(query.trim())))
             .subscribe(response => {
-                console.log('--- TRACK ---');
-                console.log(response);
-
                 const tracks = response.message.body.track_list.map(obj => obj.track);
                 this.tracks = tracks.map(track => Object.assign({}, track));
                 this.searching.tracks = false;
-                console.log('******');
-                console.log(this.tracks);
-
                 // TODO: cache tracks
-                window.localStorage.setItem('searchTracks', JSON.stringify(this.tracks));
+                //window.localStorage.setItem('searchTracks', JSON.stringify(this.tracks));
             });
 
         // Lyrics
         searchQueryObservable.pipe(debounceTime(500))
             .pipe(switchMap(query => this.listenForLyricsSearchResults(query.trim())))
             .subscribe(response => {
-                console.log('--- LYRICS ---');
-                console.log(response);
-
                 const lyrics = response.message.body.track_list.map(obj => obj.track);
                 this.lyrics = lyrics.map(track => Object.assign({}, track));
                 this.searching.lyrics = false;
 
 
-                window.localStorage.setItem('searchLyrics', JSON.stringify(this.lyrics));
+                //window.localStorage.setItem('searchLyrics', JSON.stringify(this.lyrics));
             });
 
     }
@@ -238,7 +220,9 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
         this.searchBar.nativeElement.focus();
     }
 
+    //
     // development only
+    //
     private loadDataFromLocalStorage() {
         this.artists = JSON.parse(window.localStorage.getItem('searchArtists'));
         this.tracks = JSON.parse(window.localStorage.getItem('searchTracks'));
@@ -283,7 +267,6 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
      * Called after user clicks the 'see more' button on top of the Artists table.
      */
     onSeeMoreArtistsBtnClick() {
-        console.log('see more artists');
         const query = this.query;
         this.navigateToSearchResultsPage(query, SearchCategory.Artists);
 
@@ -295,7 +278,6 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
      * Called after user clicks the 'see more' button on top of the Tracks table.
      */
     onSeeMoreTracksBtnClick() {
-        console.log('see more tracks');
         const query = this.query;
         this.navigateToSearchResultsPage(query, SearchCategory.Tracks);
 
@@ -307,7 +289,6 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
      * Called after user clicks the 'see more' button on top of the Lyrics table.
      */
     onSeeMoreLyricsBtnClick() {
-        console.log('see more lyrics');
         const query = this.query;
         this.navigateToSearchResultsPage(query, SearchCategory.Lyrics);
 
@@ -319,7 +300,6 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
      * Called after user clicks the 'See All Results' button at the bottom of the modal.
      */
     onSeeAllResultsBtnClick() {
-        console.log('see all results');
         const query = this.query;
         this.navigateToSearchResultsPage(query, SearchCategory.All);
 
@@ -332,7 +312,6 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
      * @param artist - The selected artist.
      */
     onArtistSelected(artist: Artist) {
-        console.log(artist);
         const url = '/artist/' + artist.artist_id;
         this.router.navigate([url]);
 
@@ -345,7 +324,6 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
      * @param track - The selected track.
      */
     onTrackSelected(track: Track) {
-        console.log(track);
         this.navigateToTrackDetailsPage(track);
 
         this.dismiss();
@@ -357,7 +335,6 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
      * @param lyricsTrack - The selected lyrics track.
      */
     onLyricsSelected(lyricsTrack: Track) {
-        console.log(lyricsTrack);
         this.navigateToTrackDetailsPage(lyricsTrack);
 
         this.dismiss();

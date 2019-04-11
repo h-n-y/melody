@@ -62,8 +62,6 @@ export class TrackDetailsPageComponent implements OnInit, OnDestroy  {
      */
     private listenForTrackLyrics() {
         this.musicService.trackLyricsForId$.subscribe((lyrics: Lyrics) => {
-            console.log('lyrics!!!!!');
-            console.log(lyrics);
             this.lyrics = lyrics;
             this.lyricsLines = this.lyrics.lyrics_body.split('\n');
         });
@@ -95,12 +93,7 @@ export class TrackDetailsPageComponent implements OnInit, OnDestroy  {
         this.listenForModalDismissal();
 
 
-        //this.track = JSON.parse(window.localStorage.getItem('track'));
-        //console.log(this.track);
-        //this.musicService.fetchLyricsForTrackWithId(this.track.track_id);
-
         this.paramsSub = this.route.params.subscribe((params) => {
-            console.log('--------------------------------------');
             this.trackId = +params['trackId'];
             this.fetchTrack(this.trackId);
             this.fetchLyricsForTrackWithId(this.trackId);

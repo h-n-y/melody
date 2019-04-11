@@ -54,10 +54,6 @@ export class ArtistDetailsContainerComponent implements OnInit  {
 
             } else if ( tracksMatchArtist ) {
                 this.tracks = tracks;
-
-
-                console.warn('dev code');
-                window.localStorage.setItem('tracks', JSON.stringify(tracks));
             } else {
                 console.warn('id mismatch!!');
             }
@@ -80,7 +76,6 @@ export class ArtistDetailsContainerComponent implements OnInit  {
     * 'see more' btn click handler.
     */
     onSeeMoreTracksBtnClick() {
-        console.log('see more tracks');
         this.router.navigate(['tracks'], { relativeTo: this.route });
     }
 
@@ -90,7 +85,6 @@ export class ArtistDetailsContainerComponent implements OnInit  {
      * @param {Track} track - The selected track.
      */
     onTrackSelected(track: Track) {
-        console.log('track selected');
         const url = '/track/' + track.track_id;
         this.router.navigate([url]);
     }
@@ -106,7 +100,6 @@ export class ArtistDetailsContainerComponent implements OnInit  {
 
         this.paramsSub = this.route.params.subscribe((params) => {
             this.artistId = +params['artistId'];
-            console.log('artist id is ', this.artistId);
             this.fetchTracksForArtistWithId(this.artistId);
         });
     }
