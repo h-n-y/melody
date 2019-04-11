@@ -1,10 +1,13 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
-    imports: [],
+    imports: [
+        RouterModule,
+    ],
     declarations: [
         HeaderComponent,
         FooterComponent,
