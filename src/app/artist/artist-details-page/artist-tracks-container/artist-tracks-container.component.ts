@@ -47,11 +47,11 @@ export class ArtistTracksContainerComponent implements OnInit {
 
     tracks: Track[] = [];
 
+    /**
+     * Listens for artist tracks returned by the appropriate MusicService observable.
+     */
     private listenForTracks() {
         this.musicService.tracksForArtist$.subscribe((res: { available: number, tracks: Track[] }) => {
-            console.log('yessssss');
-            console.log(res);
-
             // stops loading animation
             this.loadingTracks = false;
 
@@ -60,6 +60,11 @@ export class ArtistTracksContainerComponent implements OnInit {
         });
     }
 
+    /**
+     * Fetches tracks for the current artist.
+     * Increments page count for next fetch.
+     *
+     */
     private fetchTracks() {
 
         this.musicService.fetchTracksForArtistWithId(
@@ -80,6 +85,10 @@ export class ArtistTracksContainerComponent implements OnInit {
     constructor(private router: Router,
                 private musicService: MusicService) { }
 
+    /**
+     * 'load more' btn click handler
+     *  Requests an additional fetch of tracks from the api
+     */
     onLoadMoreBtnClick() {
         if ( this.moreTracksAvailable ) {
             this.fetchTracks();
@@ -88,10 +97,19 @@ export class ArtistTracksContainerComponent implements OnInit {
         }
     }
 
+    /**
+     * Track table row click handler.
+     * Navigate to the track details page for the selected track.
+     * @param {Track} track - The selected track.
+     */
     onTrackSelected(track) {
         const url = '/track/' + track.track_id;
         this.router.navigate([url]);
     }
+
+    //
+    // LIFECYCLE HOOKS
+    //
 
     ngOnInit() {
         this.listenForTracks();

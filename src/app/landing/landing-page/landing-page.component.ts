@@ -20,6 +20,10 @@ import { ModalService } from '../../services/modal.service';
 
 const USE_MUSIXMATCH = true;
 
+/**
+ * The home page of the application.
+ * Displays a list of popular tracks and artists.
+ */
 @Component({
     templateUrl: './landing-page.component.html',
     styleUrls: [ './landing-page.component.scss' ]
@@ -155,7 +159,7 @@ export class LandingPageComponent implements OnInit, AfterViewInit  {
     }
 
     //
-    // Lifecycle Hooks
+    // LIFECYCLE HOOKS
     //
 
     ngOnInit() {

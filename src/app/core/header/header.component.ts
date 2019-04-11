@@ -1,5 +1,8 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 
+/**
+ * Fixed header. Presents a faux search bar that displays a search modal on click.
+ */
 @Component({
     selector: 'app-header',
     templateUrl: './header.component.html',

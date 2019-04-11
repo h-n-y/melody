@@ -73,10 +73,13 @@ export class ArtistDetailsPageComponent implements OnInit  {
                 private router: Router,
                 private route: ActivatedRoute) { }
 
-    // TODO: remove
     onArtistNameClick() {
         this.router.navigate(['artist/' + this.artistId]);
     }
+
+    //
+    // LIFECYCLE HOOKS
+    //
 
     ngOnInit() {
 

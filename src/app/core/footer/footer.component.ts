@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 
+/**
+ * App footer. Displays links to my portfolio, GitHub, and Musixmatch ( as required by the API terms and conditions ).
+ */
 @Component({
     selector: 'app-footer',
     templateUrl: './footer.component.html',

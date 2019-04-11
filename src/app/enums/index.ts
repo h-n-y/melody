@@ -15,3 +15,11 @@ export enum SearchCategory {
     Artists = 'Artist',
     Lyrics = 'Lyric'
 }
+
+// 
+export enum TabCategory {
+    All = 'All',
+    Tracks = 'Track',
+    Artists = 'Artist',
+    Lyrics = 'Lyric'
+}

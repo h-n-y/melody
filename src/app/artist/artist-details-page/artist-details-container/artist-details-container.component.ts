@@ -38,12 +38,14 @@ export class ArtistDetailsContainerComponent implements OnInit  {
         return this.tracks.length === 0;
     }
 
+    /**
+     * Listens for artist tracks returned by the service.
+     */
     private listenForArtistTracks() {
         //this.musicService.tracksForArtist$.subscribe((tracks: Track[]) => {
         this.musicService.tracksForArtist$.subscribe((response: {
              available: number, tracks: Track[] }) => {
 
-            console.log('checking...');
             const tracks = response.tracks;
             // Check that the tracks indeed belong to the artist.
             const tracksMatchArtist = ( tracks.length && tracks[0].artist_id === this.artistId );
@@ -51,8 +53,6 @@ export class ArtistDetailsContainerComponent implements OnInit  {
                 console.log('NO TRACK RESULTS FOR ARTIST');
 
             } else if ( tracksMatchArtist ) {
-                console.log('SUCCESS ( tracks )');
-                console.log(tracks);
                 this.tracks = tracks;
 
 
@@ -64,6 +64,10 @@ export class ArtistDetailsContainerComponent implements OnInit  {
         });
     }
 
+    /**
+     * Fetches tracks for the given artist.
+     * @param {number} artistId - The id of the artist.
+     */
     private fetchTracksForArtistWithId(artistId: number) {
         this.musicService.fetchTracksForArtistWithId(artistId);
     }
@@ -72,16 +76,28 @@ export class ArtistDetailsContainerComponent implements OnInit  {
                private router: Router,
                private route: ActivatedRoute) { }
 
+   /**
+    * 'see more' btn click handler.
+    */
     onSeeMoreTracksBtnClick() {
         console.log('see more tracks');
         this.router.navigate(['tracks'], { relativeTo: this.route });
     }
 
+    /**
+     * Track table row event handler.
+     * Navigates to the track details page for the selected track.
+     * @param {Track} track - The selected track.
+     */
     onTrackSelected(track: Track) {
         console.log('track selected');
         const url = '/track/' + track.track_id;
         this.router.navigate([url]);
     }
+
+    //
+    // LIFECYCLE HOOKS
+    //
 
     ngOnInit() {
 

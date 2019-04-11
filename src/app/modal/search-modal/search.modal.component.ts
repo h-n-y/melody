@@ -364,7 +364,7 @@ export class SearchModalComponent implements OnInit, AfterViewInit {
     }
 
     //
-    // Lifecycle Hooks
+    // LIFECYCLE HOOKS
     //
 
     ngOnInit() {
