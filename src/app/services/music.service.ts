@@ -109,6 +109,9 @@ export class MusicService {
         });
     }
 
+    /**
+     * Fetches popular tracks from the musixmatch API.
+     */
     private jsonpFetchPopularTracks() {
 
         // Make the API call only if the popular tracks have not been previously fetched,
@@ -138,6 +141,9 @@ export class MusicService {
         }
     }
     
+    /**
+     * Fetches popular artists from the musixmatch API.
+     */
     private jsonpFetchPopularArtists() {
 
         // Make the API call only if the popular artists have not been previously fetched,
@@ -174,6 +180,10 @@ export class MusicService {
         }
     }
 
+    /**
+     * Fetches data for the artist with the given id.
+     * @param {number} artistId - The id of the artist.
+     */
     private jsonpFetchArtistForId(artistId: number) {
 
         const urlBase = BASE_URL + 'artist.get?';
@@ -190,6 +200,12 @@ export class MusicService {
         });
     }
 
+    /**
+     * Fetches track data for the given artist.
+     * @param {number} artistId - The id of the artist.
+     * @param {number} page - The desired reponse page.
+     * @param {number} pageSize - The number of results to return for each page.
+     */
     private jsonpFetchTracksForArtistWithId(artistId: number, page: number = DEFAULT_PAGE, pageSize: number = DEFAULT_PAGE_SIZE) { 
         const urlBase = BASE_URL + 'track.search?';
         const urlParameters = API_KEY_PARAMETER + '&' +
@@ -214,6 +230,10 @@ export class MusicService {
         });
     }
 
+    /**
+     * Fetches data for a particular track.
+     * @param {number} trackId - The id of the track.
+     */
     private jsonpFetchTrackWithId(trackId: number) {
         const urlBase = BASE_URL + 'track.get?';
         const urlParameters = API_KEY_PARAMETER + '&' +
@@ -229,6 +249,10 @@ export class MusicService {
         });
     }
 
+    /**
+     * Fetches the lyrics for the given track.
+     * @param {number} trackId - The id of the track whose lyrics are being fetched.
+     */
     private jsonpFetchLyricsForTrackWithId(trackId: number) {
         const urlBase = BASE_URL + 'track.lyrics.get?';
         const urlParameters = API_KEY_PARAMETER + '&' +
@@ -243,6 +267,13 @@ export class MusicService {
         });
     }
     
+    /**
+     * Generic musixmatch API search function. Requests the API to return results for the given query and search category.
+     * @param {string} query - The search query typed by the user.
+     * @param {SearchCategory} category - The search category. Categories are 'Artists', 'Tracks', and 'Lyrics'.
+     * @param {number} page - The API response page to return.
+     * @returns An observable stream providing the response to the search request.
+     */
     private search(query: string, category: SearchCategory, page: number = DEFAULT_PAGE): Observable<object> {
 
         // Build the url for the search query:
@@ -304,22 +335,47 @@ export class MusicService {
         });
     }
 
+    /**
+     * Requests artists for the given search query.
+     * @param {string} query - The search query typed by the user.
+     * @param {number} page - The desired API response page.
+     * @returns An observable providing the response to the request.
+     */
     searchArtists(query: string, page: number = DEFAULT_PAGE): Observable<any> {
         return this.search(query, SearchCategory.Artist, page);
     }
 
+    /**
+     * Requests tracks for the given search query.
+     * @param {string} query - The search query typed by the user.
+     * @param {number} page - The desired API response page.
+     * @returns An observable providing the response to the request.
+     */
     searchTracks(query: string, page: number = DEFAULT_PAGE): Observable<any> {
         return this.search(query, SearchCategory.Track, page);
     }
 
+    /**
+     * Requests lyrics for the given search query.
+     * @param {string} query - The search query typed by the user.
+     * @param {number} page - The desired API response page.
+     * @returns An observable providing the response to the request.
+     */
     searchLyrics(query: string, page: number = DEFAULT_PAGE): Observable<any> {
         return this.search(query, SearchCategory.Lyrics, page);
     }
 
+    /**
+     * @returns The musixmatch id of the artist currently displayed on the page.
+     */
     getCurrentArtistId(): number {
         return this.currentArtistId;
     }
 
+    /**
+     * Updates the id of the currently-displayed artist.
+     * @param {number} artistId - The id of the current artist.
+     */
     setCurrentArtistId(artistId: number) {
         const invalidId = artistId < 0;
         if ( invalidId ) {
@@ -330,19 +386,32 @@ export class MusicService {
         this.currentArtistId = artistId;
     }
 
+    /**
+     * Clears out the current artist id.
+     */
     clearCurrentArtistId() {
         this.currentArtistId = -1;
     }
 
+    /**
+     * Request popular tracks from the musixmatch API.
+     */
     fetchPopularTracks() {
         this.jsonpFetchPopularTracks();
     }
 
+    /**
+     * Request popular artists from the musixmatch API.
+     */
     fetchPopularArtists() {
         this.jsonpFetchPopularArtists();
     }
 
 
+    /**
+     * Requests data for the artist with the given id.
+     * @param {number} artistId - The id of the artist.
+     */
     fetchArtistForId(artistId: number) {
         // First, check if artist has previously been fetched.
         let artist: Artist = this.allArtistsSoFar.find((artist: Artist) => artist.artist_id === artistId);
@@ -355,6 +424,12 @@ export class MusicService {
         this.jsonpFetchArtistForId(artistId);
     }
 
+    /**
+     * Requests track data for the given artist.
+     * @param {number} artistId - The id of the artist.
+     * @param {number} pageNumber - The desired API response page.
+     * @param {number} pageSize - The desired size of each API response page.
+     */
     fetchTracksForArtistWithId(artistId: number, pageNumber: number = DEFAULT_PAGE, pageSize: number = DEFAULT_PAGE_SIZE) {
 
         /*
@@ -370,11 +445,19 @@ export class MusicService {
     }
 
 
+    /**
+     * Request data for the track with the given id.
+     * @param {number} trackId - The id of the track.
+     */
     fetchTrackWithId(trackId: number) {
         this.jsonpFetchTrackWithId(trackId);
     }
 
 
+    /**
+     * Requests lyrics for the track with the given id.
+     * @param {number} trackId - The id of the track.
+     */
     fetchLyricsForTrackWithId(trackId: number) {
         // TODO:
         // First check if already cached.
@@ -383,6 +466,13 @@ export class MusicService {
     }
 
 
+    /*
+     * TODO: determine if this method is still necessary?
+     */
+    /**
+     * Searches all categories for the given search query.
+     * @param {string} query - The search query typed by the user.
+     */
     searchAllCategories(query: string) {
         this.searchArtists(query);
         this.searchTracks(query);
@@ -399,6 +489,11 @@ export class MusicService {
     statusCodeCheck(statusCode: number): boolean {
         switch ( statusCode ) {
             case 200: return true;
+
+            /**
+             * TODO:
+             * handle all non-200 status codes
+             */
 
             case 400:
                 break;
