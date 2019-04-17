@@ -6,7 +6,7 @@ const routes: Routes = [
     { path: 'artist', loadChildren: './artist/artist.module#ArtistModule' },
     { path: 'track/:trackId', loadChildren: './track/track.module#TrackModule' },
     { path: 'search', loadChildren: './search/search.module#SearchModule' },
-    { path: '', redirectTo: 'home', pathMatch: 'full' },
+    { path: '*', redirectTo: 'home', pathMatch: 'full' },
 ];
 
 @NgModule({
