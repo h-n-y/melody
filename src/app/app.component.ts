@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
 // Services
@@ -26,7 +27,12 @@ export class AppComponent implements OnInit {
         this.titleService.setTitle(title);
     }
 
+    private navigateToLandingPage() {
+        this.router.navigate(['home']);
+    }
+
     constructor(private modalService: ModalService,
+                private router: Router,
                 private titleService: Title) { }
 
     /**
@@ -51,5 +57,11 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         this.setAppTitle(APPLICATION_TITLE);
+
+        //
+        // This has been added strictly for the GitHub pages version, which will
+        // not navigate to the home page otherwise.
+        //
+        this.navigateToLandingPage();
     }
 }
