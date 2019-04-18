@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+
 /**
  * App footer. Displays links to my portfolio, GitHub, and Musixmatch ( as required by the API terms and conditions ).
  */
@@ -9,4 +10,7 @@ import { Component } from '@angular/core';
     styleUrls: [ './footer.component.scss' ]
 })
 export class FooterComponent  {
+
+
+    readonly MUSIX_MATCH_HREF = 'https://www.musixmatch.com';
 }
