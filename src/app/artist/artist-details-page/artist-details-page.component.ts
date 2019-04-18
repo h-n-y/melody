@@ -71,6 +71,9 @@ export class ArtistDetailsPageComponent implements OnInit  {
                 private router: Router,
                 private route: ActivatedRoute) { }
 
+    /**
+     * Navigates to the default view of the Artist Details page.
+     */
     onArtistNameClick() {
         this.router.navigate(['artist/' + this.artistId]);
     }

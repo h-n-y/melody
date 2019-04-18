@@ -95,7 +95,6 @@ export class ArtistDetailsContainerComponent implements OnInit  {
 
     ngOnInit() {
 
-        //this.tracks = JSON.parse(window.localStorage.getItem('tracks')) || [];
         this.listenForArtistTracks();
 
         this.paramsSub = this.route.params.subscribe((params) => {
